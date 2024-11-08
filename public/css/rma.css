@@ -1,0 +1,31 @@
+#formRma {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    max-width: 600px;
+    margin: auto;
+}
+
+#formRma label {
+    text-align: right;
+    padding: 5px;
+    font-weight: bold;
+}
+
+#formRma input,
+#formRma textarea {
+    padding: 8px;
+    font-size: 1em;
+    width: 100%;
+}
+
+#formRma button {
+    grid-column: 1 / span 2;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 1em;
+}
+
+.campoOculto {
+    display: none; /* Oculta los elementos inicialmente */
+}

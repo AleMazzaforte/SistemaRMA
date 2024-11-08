@@ -1,11 +1,11 @@
 <%- include('partials/head') %>
-    <link rel="stylesheet" href="./css/cargaClientes.css">
+    <link rel="stylesheet" href="./css/estilosGenerales.css">
     <title>Sistema RMA - Clientes</title>
 </head>
 <body>
     <%- include('partials/header') %>
     <h1>Gestión Clientes</h1>
-    
+    <h2>Cargar cliente</h2>
     <form action="/agregarCliente" method="POST" id="formCliente">
         <!-- Campo para ID (manual durante desarrollo) -->
         <label for="id">ID:</label>
@@ -18,35 +18,35 @@
 
         <!-- CUIT -->
         <label for="cuit">CUIT:</label>
-        <input type="text" id="cuit" name="cuit" value="11" ><br>
+        <input type="text" id="cuit" name="cuit" ><br>
 
         <!-- Provincia -->
         <label for="provincia">Provincia:</label>
-        <input type="text" id="provincia" name="provincia" value="11" ><br>
+        <input type="text" id="provincia" name="provincia" ><br>
 
         <!-- Ciudad -->
         <label for="ciudad">Ciudad:</label>
-        <input type="text" id="ciudad" name="ciudad" value="11" ><br>
+        <input type="text" id="ciudad" name="ciudad" ><br>
 
         <!-- Domicilio -->
         <label for="domicilio">Domicilio:</label>
-        <input type="text" id="domicilio" name="domicilio" value="11" ><br>
+        <input type="text" id="domicilio" name="domicilio" ><br>
 
         <!-- Teléfono -->
         <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono" value="11" ><br>
+        <input type="text" id="telefono" name="telefono" ><br>
 
         <!-- Transporte -->
         <label for="transporte">Transporte:</label>
-        <input type="text" id="transporte" name="transporte" value="11" ><br>
+        <input type="text" id="transporte" name="transporte" ><br>
 
         <!-- Seguro -->
         <label for="seguro">Seguro:</label>
-        <input type="text" id="seguro" name="seguro" value="11" ><br>
+        <input type="text" id="seguro" name="seguro" ><br>
 
         <!-- Condición de entrega -->
         <label for="condicionDeEntrega">Condición de Entrega:</label>
-        <input type="text" id="condicionDeEntrega" name="condicionDeEntrega" value="11" ><br>
+        <input type="text" id="condicionDeEntrega" name="condicionDeEntrega" ><br>
 
         <button type="submit" id="botonCargar">Cargar Cliente</button>
         <button type="button" id="editButton">Editar</button>
@@ -58,13 +58,7 @@
     <input type="text" id="clienteSearch" placeholder="Buscar cliente..." style="display: none;" class="clienteSearch">
     <div id="suggestionsContainer1" class="clienteSearch"></div>
     
-<!-- ********************************************
-    formulario para cargar productos masivamente 
-*************************************************-->
-    <form action="/cargarProductos" method="POST">
-        <button type="submit">Cargar Productos</button>
-    </form>
-    
+
 
 
 

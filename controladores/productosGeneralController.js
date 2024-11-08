@@ -1,29 +1,69 @@
-const fs = require('fs');
-const path = require('path');
-const db = require('../db'); // Asegúrate de importar la conexión a la base de datos
+const { conn } = require('../bd/bd'); 
 
-// Función para cargar productos desde el JSON
-const cargarProductos = async (req, res) => {
-    try {
-        // Leer el archivo JSON
-        const filePath = path.join(__dirname, '../public/skuListado.js');
 
-        // Usar fs.promises para leer el archivo de manera asíncrona
-        const data = await fs.promises.readFile(filePath, 'utf8');
-        const productos = JSON.parse(data);
 
-        // Preparar la consulta SQL para insertar productos
-        const sql = 'INSERT INTO productosGeneral (sku, marca, descripcion) VALUES ?';
-        const valores = productos.map(producto => [producto.sku, producto.marca, producto.descripcion]);
 
-        // Ejecutar la consulta
-        const [results] = await db.conn.query(sql, [valores]);
+module.exports = { 
+    cargarProductos: (req, res) => {
+    // Renderiza el archivo EJS
+    res.render('cargarProductos'); 
+    },
 
-        res.send(`Se han insertado ${results.affectedRows} productos.`);
-    } catch (error) {
-        console.error('Error al cargar productos:', error);
-        res.status(500).send('Error al cargar productos en la base de datos.');
+    agregarProductoNuevo: async (req, res) => {
+        const { sku, marca, descripcion, rubro } = req.body; // Extrae los datos del formulario
+
+        // Lógica para insertar el producto en la base de datos
+        const query = 'INSERT INTO productos (sku, marca, descripcion, rubro) VALUES (?, ?, ?, ?)';
+
+        try {
+            
+            // Usa await para ejecutar la consulta
+            await conn.query(query, [sku, marca, descripcion, rubro]);
+            // Redirige a la página de carga de productos después de agregar exitosamente
+            res.redirect('/cargarProductos');
+        } catch (err) {
+            console.error('Error al agregar el producto:', err);
+            return res.status(500).send('Error al agregar el producto');
+        }
+    },
+
+    getListarProductos: async (req, res) => {
+        try {
+            const query = 'SELECT id, sku, descripcion, marca, rubro FROM productos';
+            const [results] = await conn.query(query);
+            res.json(results);
+            
+        } catch (error) {
+            console.error('Error al listar productos:', error);
+            res.status(500).send('Error al listar productos');
+        }
+    },
+
+    actualizarProducto: async (req, res) => {
+        const { sku, marca, descripcion, rubro  } = req.body;
+        const { id } = req.params;  
+        const query = 'UPDATE productos SET sku = ?, marca = ?, descripcion = ?, rubro = ? WHERE id = ?';
+
+        try {
+            await conn.query(query, [sku,  marca, descripcion, rubro, id]);
+            res.json({ success: true, message: 'Producto actualizado correctamente' });
+        } catch (err) {
+            console.error('Error al actualizar el producto:', err);
+            res.status(500).send('Error al actualizar el producto');
+        }
+    },
+    
+
+    eliminarProducto: async (req, res) => {
+        const { sku } = req.body;
+        const query = 'DELETE FROM productos WHERE sku = ?';
+        console.log('req.body', req.body)
+        try {
+            await conn.query(query, [sku]);
+            res.json({ success: true, message: 'Producto eliminado correctamente' });
+        } catch (err) {
+            console.error('Error al eliminar el producto:', err);
+            res.status(500).send('Error al eliminar el producto');
+        }
     }
-};
-
-module.exports = { cargarProductos };
+}

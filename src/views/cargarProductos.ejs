@@ -1,0 +1,45 @@
+<%- include('partials/head') %> 
+<link rel="stylesheet" href="./css/estilosGenerales.css">
+
+<title>Productos</title>
+
+</head>
+<body>
+    <%- include('partials/header') %> 
+    
+    <h1>Gestión de Productos</h1>
+
+    <form action="/agregarProductoNuevo" method="POST" id="formProducto">
+        <!-- Campo para SKU -->
+        <label for="sku">SKU:</label>
+        <input type="text" id="sku" name="sku" autocomplete="off"><br>
+
+        <!-- Marca -->
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" name="marca"  autocomplete="off"><br>
+
+
+        <!-- Descripción -->
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion"><br>
+
+        <!-- Rubro -->
+        <label for="rubro">Rubro:</label>
+        <input type="text" id="rubro" name="rubro"  autocomplete="off"><br>
+
+
+        <!-- Contenedor para las sugerencias de búsqueda (a implementar) -->
+        <div id="suggestionsContainer1" style="display: none;"></div>
+
+        <!-- Botones de acción -->
+        <button type="submit" id="botonCargarProducto">Cargar Producto</button>
+        
+        <button type="button" id="botonActualizarProducto">Actualizar</button>
+        <button id="botonGuardarProducto" type="button" style="display: none;">Guardar</button>
+
+        <button type="button" id="botonEliminarProducto">Eliminar
+    </form>
+
+    <script src="./js/listarProductos.js"></script>
+</body>
+</html>

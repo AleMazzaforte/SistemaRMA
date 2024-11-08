@@ -5,6 +5,10 @@ const mainController = require('../controladores/mainController');
 const usuarioController = require('../controladores/usuarioController.js');
 const cliente = require('../controladores/clientesController.js');
 const productosGeneralController = require('../controladores/productosGeneralController');
+const cargarRma = require('../controladores/cargarRmaController.js');
+const gestionarRma = require('../controladores/gestionarRmaController.js');
+const transportesController = require('../controladores/transportesController.js')
+const imprimirEtiqueta = require('../controladores/etiquetasController.js');
 
 router.get('/', authController.isAuthenticated, mainController.getIndex)
 
@@ -27,9 +31,31 @@ router.post('/actualizarCliente', authController.isAuthenticated, cliente.postAc
 //Ruta para listar clientes
 router.get('/buscarCliente', cliente.getListarClientes);
 
-// Ruta para cargar productos masivamente
-router.post('/cargarProductos', authController.isAuthenticated, productosGeneralController.cargarProductos);
+// RutaS para cargar productos 
+router.get('/cargarProductos', authController.isAuthenticated, productosGeneralController.cargarProductos);
 
+// Rutas para un nuevo producto
+router.post('/agregarProductoNuevo', authController.isAuthenticated, productosGeneralController.agregarProductoNuevo);
+router.get('/buscarProductos', authController.isAuthenticated, productosGeneralController.getListarProductos);
+router.post('/actualizarProducto/:id', authController.isAuthenticated, productosGeneralController.actualizarProducto);
+router.post('/eliminarProducto', authController.isAuthenticated, productosGeneralController.eliminarProducto);
 
+// Rutas para cargar RMA
+router.get('/agregarRma',  authController.isAuthenticated, cargarRma.getCargarRma);
+router.get('/listarClientesRma', authController.isAuthenticated, cargarRma.getListarClientesRma);
+router.post('/agregarRma', authController.isAuthenticated, cargarRma.postAgregarRma);
+
+// Rutas para gestionar RMA
+router.get('/gestionarRma', authController.isAuthenticated, gestionarRma.getGestionarRma);
+router.get('/gestionarRma', authController.isAuthenticated, cargarRma.getListarClientesRma);
+router.get('/listarProductosRma/:idCliente',  authController.isAuthenticated, gestionarRma.getListarProductosRma);
+router.post('/actualizarProductoRma/:idRma', authController.isAuthenticated, gestionarRma.postActualizarCliente);
+router.post('/eliminarProductoRma/:idRma', authController.isAuthenticated, gestionarRma. postEliminarProducto);
+
+//Rutas para transportes
+router.get('/agregarTransporte', authController.isAuthenticated, transportesController.getAgregarTransporte);
+
+//Rutas para imprimir etiquetas
+router.get('/imprimirEtiqueta', authController.isAuthenticated, imprimirEtiqueta.getImprimirEtiqueta);
 
 module.exports = router;

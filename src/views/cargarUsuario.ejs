@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/estilosGenerales.css">
     <title>Cargar Usuario</title>
 </head>
 <body>
+    <%- include('partials/header') %>
     <h1>Cargar Usuario</h1>
     <form action="/cargarUsuario" method="POST">
         <label for="username">Usuario</label>

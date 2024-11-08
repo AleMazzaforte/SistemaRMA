@@ -1,0 +1,101 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="./css/estilosGenerales.css">
+<link rel="stylesheet" href="./css/cargaProductosRma.css">
+<link rel="stylesheet" href="./css/gestionListaRma.css">
+<title>Sistema RMA - RMA</title>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <br>
+    <form id="formRma" action="/agregarRma" method="POST">
+        <!-- Cliente -->
+        <label for="clienteSearch">Cliente:</label>
+        <input type="text" id="clienteSearch" name="cliente" autocomplete="off" style="margin-bottom: -10px;">
+        <div class="divrelleno"></div>
+        <div id="suggestionsContainer1" style="display: none;"></div>
+
+        <!-- Modelo -->
+        <label for="modelo" class="campoOculto">SKU:</label>
+        <input type="text" id="modelo" name="modelo" min="1" class="campoOculto" autocomplete="off"> 
+        <div class="divrelleno"></div>
+        <div id="suggestionsContainer2" style="display: none;"></div>
+
+        <!-- Cantidad -->
+        <label for="cantidad" class="campoOculto">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" min="1"  class="campoOculto">        
+    
+        <!-- Marca -->
+        <label for="marca" class="campoOculto">Marca:</label>
+        <input type="text" id="marca" name="marca" autocomplete="off"  class="campoOculto">
+    
+        <!-- Solicita -->
+        <label for="solicita" class="campoOculto">Solicita:</label>
+        <input type="date" id="solicita" name="solicita" autocomplete="off" class="campoOculto">
+    
+        <!-- OP/Lote -->
+        <label for="opLote" class="campoOculto">OP/Lote:</label>
+        <input type="text" id="opLote" name="opLote" autocomplete="off" class="campoOculto">
+    
+        <!-- Vencimiento -->
+        <label for="vencimiento" class="campoOculto">Vencimiento:</label>
+        <input type="date" id="vencimiento" name="vencimiento" class="campoOculto">
+    
+        <!-- Se Entrega -->
+        <label for="seEntrega" class="campoOculto">Se Entrega:</label>
+        <input type="date" id="seEntrega" name="seEntrega" autocomplete="off" class="campoOculto">
+    
+        <!-- Se Recibe -->
+        <label for="seRecibe" class="campoOculto">Se Recibe:</label>
+        <input type="date" id="seRecibe" name="seRecibe" autocomplete="off" class="campoOculto">
+    
+        <!-- Observaciones -->
+        <label for="observaciones" class="campoOculto">Observaciones:</label>
+        <textarea id="observaciones" name="observaciones" rows="2" class="campoOculto"></textarea>
+    
+        <!-- Número de Ingreso -->
+        <label for="numIngreso" class="campoOculto">N° de Ingreso:</label>
+        <input type="text" id="numIngreso" name="nIngreso"  class="campoOculto">
+    
+        <!-- Número de Egreso -->
+        <label for="numEgreso" class="campoOculto">N° de Egreso:</label>
+        <input type="text" id="numEgreso" name="nEgreso"  class="campoOculto">
+        
+
+        <!-- Campo oculto para ID del cliente -->
+        <input type="hidden" id="idCliente" name="idCliente">
+
+        <button type="submit" id="botonCargar" class="campoOculto" disabled onclick="enviarFormulario()">Cargar RMA</button>
+    </form>
+    
+    <!-- Formulario para mostrar la lista de productos asociados al cliente -->
+    <form id="formProductos" style="display: none; grid-template-columns: repeat(5, 1fr); gap: 10px;">
+        
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Cantidad</th>
+                        <th>Marca</th>
+                        <th>Solicita</th>
+                        <th>OP/Lote</th>
+                        <th>Vencimiento</th>
+                        <th>Se Entrega</th>
+                        <th>Se Recibe</th>
+                        <th>Observaciones</th>
+                        <th>N° de Ingreso</th>
+                        <th>N° de Egreso</th>
+                    </tr>
+                </thead>
+                <tbody id="productosTableBody">
+                    <!-- Aquí se llenará dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+        <button id="botonActualizarRma" style="display: none;">Actualizar</button>
+        
+    </form>
+
+    <script src="./js/listarClientesRma.js" type="module"></script>
+    <script src="./js/listarProductosRMA.js"></script>
+    <script src="./js/gestionarRMA.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+/* Centrando la tabla en la página */
+#formProductos {
+    display: grid;
+    justify-content: center;
+    margin-left: 10%;
+    margin-top: 20px;    
+}
+
+/* Estilos para la tabla */
+#formProductos table {
+    width: auto; /* Ajusta el ancho según tus necesidades */
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+/* Estilos para las cabeceras de columna */
+#formProductos th {
+    background-color: #f0f0f0;
+    color: #333;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+}
+
+/* Estilo específico para la columna de Descripción */
+#formProductos th.descripcion,
+#formProductos td.descripcion {
+    width: 200px; /* Ajusta el ancho de la columna "Descripción" */
+    word-break: break-word; /* Permite que el texto se divida en varias líneas */
+    white-space: normal; /* Permite el ajuste del texto */
+}
+
+/* Ancho mínimo para la columna de Modelo */
+
+#formProductos td.modelo {
+    min-width: 100px; /* Ajusta el ancho mínimo necesario para "Modelo" */
+   width: auto;
+   
+}
+
+/* Estilos para las celdas de la tabla */
+#formProductos td,
+#formProductos th {
+    padding: 8px;
+    border: 1px solid #ddd;
+    width: auto
+    
+}
+
+/* Estilos para los campos de entrada dentro de las celdas */
+#formProductos input[type="date"],
+#formProductos input[type="text"],
+#formProductos input[type="number"] {
+    width: 95%; /* Ajusta el ancho para adaptarse a la celda */
+    padding: 1px;
+    font-size: 14px;
+    border: none;
+}
+
+/* Hover para filas de la tabla */
+#formProductos tr:hover {
+    background-color: #f9f9f9;
+}
