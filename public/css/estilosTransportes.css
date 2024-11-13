@@ -16,6 +16,49 @@
     margin-top: 20px;
 }
 
+/* Estilos para la tabla de transportes */
+#formTransporte table {
+    width: 100%; 
+    border-collapse: collapse;
+    margin: 20px 0;
+    border: 1px solid var(--bordesInput);
+}
+
+#formTransporte th {
+    background-color: var(--primary-color);
+    color: #fff;
+    text-align: left;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 1px solid var(--bordesInput);
+}
+
+#formTransporte td {
+    padding: 8px;
+    border: 1px solid var(--bordesInput);
+    font-size: 1rem;
+}
+
+/* Ajuste de ancho para columnas específicas */
+#formTransporte td.descripcion {
+    width: 200px;
+    word-break: break-word;
+    white-space: normal;
+}
+
+/* Campos de entrada dentro de la tabla */
+#formTransporte input[type="text"],
+#formTransporte input[type="number"],
+#formTransporte input[type="date"] {
+    width: 90%;
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid var(--bordesInput);
+    border-radius: 4px;
+}
+
+/* Estilos generales de inputs y labels */
 label {
     grid-column: 1;
     align-self: center;
@@ -28,34 +71,34 @@ input {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1.5rem;
+    position: relative;
 }
 
-button {
+/* button {
     grid-column: span 2;
     justify-self: center;
     padding: 10px 20px;
-}
+    font-size: 1.2rem;
+    border-radius: 4px;
+} */
 
 .botonEdicion {
     display: none;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+/* Estilos para el contenedor de sugerencias */
 #suggestionsContainer1 {
-    position: absolute;
+    position: relative;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid var(--bordesInput);
     border-radius: 4px;
-    max-height: 105%;
+    max-height: 6em; /* Altura máxima de aproximadamente 6 renglones */
     overflow-y: auto;
     z-index: 1000;
     display: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%; 
+    
 }
 
 .suggestion-item {
@@ -63,9 +106,13 @@ button {
     cursor: pointer;
     display: block;
     margin: 5px 0;
-    border: none; 
 }
 
-.suggestion-item:hover {
+.suggestion-item:hover, .suggestion.active {
     background-color: #e9e9e9;
+}
+
+/* Hover en filas de la tabla */
+#formTransporte tr:hover {
+    background-color: #f9f9f9;
 }

@@ -8,8 +8,8 @@
     <h2>Cargar cliente</h2>
     <form action="/agregarCliente" method="POST" id="formCliente">
         <!-- Campo para ID (manual durante desarrollo) -->
-        <label for="id">ID:</label>
-        <input type="number" id="id" name="id" ><br>
+        
+        <input type="hidden" id="id" name="id" ><br>
 
         <!-- Nombre -->
         <label for="nombre">Nombre:</label>
@@ -53,15 +53,11 @@
         <button id="botonActualizar" class="botonEdicion">Actualizar</button>
         <button id="botonEliminar" class="botonEdicion">Eliminar</button>
     </form>
-
+ 
     
     <input type="text" id="clienteSearch" placeholder="Buscar cliente..." style="display: none;" class="clienteSearch">
     <div id="suggestionsContainer1" class="clienteSearch"></div>
     
-
-
-
-
 
     <script src="./js/listarClientes.js"></script>
     <script src="./js/actualizarClientes.js"></script>

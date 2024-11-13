@@ -54,6 +54,13 @@ router.post('/eliminarProductoRma/:idRma', authController.isAuthenticated, gesti
 
 //Rutas para transportes
 router.get('/agregarTransporte', authController.isAuthenticated, transportesController.getAgregarTransporte);
+router.get('/listarTransportes', authController.isAuthenticated, transportesController.getListarTransportes);
+router.post('/agregarTransporte', authController.isAuthenticated, transportesController.postAgregarTransporte);
+
+//Rutas para gestionar transportes
+router.get('/gestionarTransporte', authController.isAuthenticated, transportesController.getGestionarTransportes);
+router.post('/actualizarTransporte/idTransporte', authController.isAuthenticated, transportesController.postActualizarTransporte);
+router.post('/eliminarTransporte', authController.isAuthenticated, transportesController.postEliminarTransporte);
 
 //Rutas para imprimir etiquetas
 router.get('/imprimirEtiqueta', authController.isAuthenticated, imprimirEtiqueta.getImprimirEtiqueta);

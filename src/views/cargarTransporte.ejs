@@ -9,28 +9,34 @@
 </head>
 <body>
     <%- include('partials/header') %>
-    <h1>Cargar transporte</h1>
+    <h1 id="h1">Cargar transporte</h1>
+    <h1 class="gestionarTransporte" style="display: none;">Gestionar transporte</h1>
     <form action="/agregarTransporte" method="POST" id="formTransporte">
         <!-- Nombre -->
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" autocomplete="off">
+        <div></div>
         <div id="suggestionsContainer1" style="display: none;"></div><br>
     
         <!-- Dirección Local -->
-        <label for="direccionLocal">Dirección Local:</label>
-        <input type="text" id="direccionLocal" name="direccionLocal"><br>
+        <label for="direccionLocal" class="cargarTransporte">Dirección Local:</label>
+        <input type="text" id="direccionLocal" name="direccionLocal" class="cargarTransporte"><br>
     
         <!-- Teléfono -->
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono"><br>
+        <label for="telefono" class="cargarTransporte">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" class="cargarTransporte"><br>
+
+        <!-- Id oculto -->
+         <input type="hidden" id="idTransporte" name="idTransporte" value="">
     
         <!-- Botones de acción -->
         <button type="submit" id="botonCargar">Cargar Transporte</button>
-        <button type="button" id="editButton">Editar</button>
-        <button id="botonActualizar" class="botonEdicion">Actualizar</button>
-        <button id="botonEliminar" class="botonEdicion">Eliminar</button>
+        
+        <button id="botonActualizar" class="cargarTransporte">Actualizar</button>
+        <button id="botonEliminar" class="cargarTransporte">Eliminar</button>
+        
     </form>
     
-    
+    <script src="js/listarTransportes.js"></script>
 </body>
 </html>

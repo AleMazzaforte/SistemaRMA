@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Escuchar el evento click del botón "Actualizar"
     botonActualizar.addEventListener('click', async (event) => {
-        console.log('Botón actualizar clickeado antes de prevent');
+        
         event.preventDefault(); // Evitar el comportamiento de envío predeterminado
-        console.log('Botón actualizar clickeado');
+        
         const formData = new FormData(document.getElementById('formCliente'));
 
         try {
