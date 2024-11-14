@@ -23,19 +23,28 @@ module.exports = {
     },
 
     getGestionarTransportes: (req, res) => {
-        res.render('cargarTransporte')
+        let transporte = {};
+        res.render('cargarTransporte', { transporte: transporte });
     },
 
     postActualizarTransporte: async (req, res) => {
         const idTransporte = req.params.idTransporte;
-        const [datos] = req.body;
-        const sql = `UPDATE transportes SET nombre = ?, direccionLocal = ?, telefono = ? WHERE idTransporte = ${idTransporte} VALUES (?, ?, ?, ?)`;
-        conn.query(sql, datos.nombre, datos.direccionLocal, datos.telefono )
-        res.render('cargarTransporte')
+        
+        const { nombre, direccionLocal, telefono } = req.body;  // Captura los datos del body
+        
+        const sql = `UPDATE transportes SET nombre = ?, direccionLocal = ?, telefono = ? WHERE idTransporte = ?`;  // Consulta SQL para actualizar
+        await conn.query(sql, [nombre, direccionLocal, telefono, idTransporte]);  // Ejecuta la consulta con los datos
+        
+        res.redirect('/gestionarTransporte');  // Redirige a la lista de transportes después de la actualización
     },
-
+    
     postEliminarTransporte: async (req, res) => {
-        const sql = `DELETE FROM transportes WHERE idTransporte = ?`
+        const idTransporte = req.params.idTransporte;  // Captura el idTransporte desde los parámetros
+        
+        const sql = `DELETE FROM transportes WHERE idTransporte = ?`;  // Consulta SQL para eliminar
+        await conn.query(sql, [idTransporte]);  // Ejecuta la consulta con el id
+        
+        res.redirect('/listarTransportes');  // Redirige a la lista de transportes después de la eliminación
     }
      
 }

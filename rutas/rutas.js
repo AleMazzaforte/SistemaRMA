@@ -59,8 +59,8 @@ router.post('/agregarTransporte', authController.isAuthenticated, transportesCon
 
 //Rutas para gestionar transportes
 router.get('/gestionarTransporte', authController.isAuthenticated, transportesController.getGestionarTransportes);
-router.post('/actualizarTransporte/idTransporte', authController.isAuthenticated, transportesController.postActualizarTransporte);
-router.post('/eliminarTransporte', authController.isAuthenticated, transportesController.postEliminarTransporte);
+router.post('/actualizarTransporte/:idTransporte', authController.isAuthenticated, transportesController.postActualizarTransporte);
+router.post('/eliminarTransporte/:idTransporte', authController.isAuthenticated, transportesController.postEliminarTransporte);
 
 //Rutas para imprimir etiquetas
 router.get('/imprimirEtiqueta', authController.isAuthenticated, imprimirEtiqueta.getImprimirEtiqueta);

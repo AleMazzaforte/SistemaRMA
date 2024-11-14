@@ -1,12 +1,29 @@
 const rutaActual = window.location.pathname;
-console.log('ruta', rutaActual);
 
+// Ocultar y mostrar elementos
+if (rutaActual === '/gestionarTransporte') {
+    document.getElementById('h1').setAttribute('style', 'display: none !important');
+    document.getElementById('botonCargar').disabled = true;
+    document.getElementById('botonCargar').setAttribute('style', 'display: none !important');
+    
+    let ocultarElementos = document.querySelectorAll('.cargarTransporte');
+    let mostrarElementos = document.querySelector('.gestionarTransporte');
+    let transporte = ''
+    ocultarElementos.forEach(elemento => {
+        elemento.style.display = 'none';
+    });
+    
+    
+    mostrarElementos.style.display = 'block';
+
+    
+}
 
 
 document.addEventListener('DOMContentLoaded', async () => {
     const listarTransporte = await fetch('/listarTransportes');
     const listaTransportes = await listarTransporte.json();
-    console.log('lista transporte', listaTransportes);
+    
 
     const inputNombre = document.getElementById('nombre');
     const inputDireccion = document.getElementById('direccionLocal');
@@ -22,12 +39,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         selectedIndex = -1;
         
         const query = inputNombre.value.toLowerCase();
-
+        
         if (query.length > 1) {
             const filteredTransportes = listaTransportes.filter(transporte =>
                 transporte.nombre.toLowerCase().includes(query)
             );
-
             suggestionsContainer.style.display = 'grid';
 
             filteredTransportes.forEach((transporte, index) => {
@@ -61,18 +77,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             inputTelefono.value = selectedTelefono;
             inputIdTransporte.value = selectedId;
 
-            //document.querySelectorAll('.cargarTransporte').forEach(e => e.style.display = 'grid');
+              // Cambiar el action del formulario para que apunte a la ruta de actualización
+            const formTransporte = document.getElementById('formTransporte');
+            formTransporte.setAttribute('action', `/actualizarTransporte/${selectedId}`);  // Ruta de actualización con el id
+  
+
+            document.querySelectorAll('.cargarTransporte').forEach(e => e.style.display = 'grid');
             
             suggestionsContainer.style.display = 'none';
         }
     });
 
     // Código para navegar por las sugerencias con flechas y seleccionar con Enter
-    inputNombre.addEventListener('keydown', (event) => { console.log('evento', event.key)
-        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-            event.preventDefault();  // Evitar que el navegador maneje las teclas
-        }
+    inputNombre.addEventListener('keydown', (event) => { //console.log('evento antes de todos', event.key)
+        // if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        //     event.preventDefault();  // Evitar que el navegador maneje las teclas
+        // }
+        
+        
         const suggestions = document.querySelectorAll('.suggestion');
+        
+        
         if (event.key === 'ArrowDown') {
             if (selectedIndex < suggestions.length - 1) {
                 selectedIndex++;
@@ -85,8 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 highlightSuggestion(suggestions[selectedIndex]);
             }
         } else if (event.key === 'Enter') {
-            console.log('selectedindex', selectedIndex)
-            console.log(event.key)
+            
             // Verificar si hay una sugerencia seleccionada
             if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
                 const selectedSuggestion = suggestions[selectedIndex]; // Utilizar la sugerencia seleccionada
@@ -94,18 +118,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const selectedNombre = selectedSuggestion.textContent;
                 const selectedDireccion = selectedSuggestion.getAttribute('data-direccion');
                 const selectedTelefono = selectedSuggestion.getAttribute('data-telefono');
-                console.log('selected suggestion', selectedSuggestion);
-                console.log(' suggestion index ', suggestions[selectedIndex]);
-    
+                
                 // Insertar valores en los inputs
                 inputNombre.value = selectedNombre;
                 inputDireccion.value = selectedDireccion;
                 inputTelefono.value = selectedTelefono;
                 inputIdTransporte.value = selectedId;
                 
+                  // Cambiar el action del formulario para que apunte a la ruta de actualización
+                const formTransporte = document.getElementById('formTransporte');
+                formTransporte.setAttribute('action', `/actualizarTransporte/${selectedId}`);  // Ruta de actualización con el id
+
                 
-                //document.querySelector('.gestionarTransporte').style.display = 'block';
-                //suggestionsContainer.style.display = 'none'; // Ocultar las sugerencias después de la selección
+                document.querySelectorAll('.cargarTransporte').forEach(e => e.style.display = 'grid');            
+                suggestionsContainer.style.display = 'none';                
             }
         }
     });
@@ -117,17 +143,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Ocultar y mostrar elementos
-if (rutaActual === '/gestionarTransporte') {
-    document.getElementById('h1').setAttribute('style', 'display: none !important');
-    document.getElementById('botonCargar').setAttribute('style', 'display: none !important');
-    
-    let ocultarElementos = document.querySelectorAll('.cargarTransporte');
-    let mostrarElementos = document.querySelector('.gestionarTransporte');
 
-    ocultarElementos.forEach(elemento => {
-        elemento.style.display = 'none';
-    });
-    
-    mostrarElementos.style.display = 'block';
-}
