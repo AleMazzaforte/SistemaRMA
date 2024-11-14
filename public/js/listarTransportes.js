@@ -1,26 +1,31 @@
 const rutaActual = window.location.pathname;
 
 // Ocultar y mostrar elementos
-if (rutaActual === '/gestionarTransporte') {
-    document.getElementById('h1').setAttribute('style', 'display: none !important');
-    document.getElementById('botonCargar').disabled = true;
-    document.getElementById('botonCargar').setAttribute('style', 'display: none !important');
+ if (rutaActual === '/gestionarTransporte') {
+     document.getElementById('h1').setAttribute('style', 'display: none !important');
+     document.getElementById('botonCargar').disabled = true;
+     document.getElementById('botonCargar').setAttribute('style', 'display: none !important');
     
-    let ocultarElementos = document.querySelectorAll('.cargarTransporte');
-    let mostrarElementos = document.querySelector('.gestionarTransporte');
-    let transporte = ''
-    ocultarElementos.forEach(elemento => {
-        elemento.style.display = 'none';
-    });
+     let ocultarElementos = document.querySelectorAll('.cargarTransporte');
+     let mostrarElementos = document.querySelector('.gestionarTransporte');
+     let transporte = ''
+     ocultarElementos.forEach(elemento => {
+         elemento.style.display = 'none';
+     });
     
     
-    mostrarElementos.style.display = 'block';
+     mostrarElementos.style.display = 'block';
+     
 
     
-}
-
+ }
+document.getElementById('botonActualizar').style.display = 'none';
+     document.getElementById('botonEliminar').style.display = 'none';
 
 document.addEventListener('DOMContentLoaded', async () => {
+    if (rutaActual === '/agregarTransporte') {
+        return
+    }
     const listarTransporte = await fetch('/listarTransportes');
     const listaTransportes = await listarTransporte.json();
     
@@ -78,8 +83,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             inputIdTransporte.value = selectedId;
 
               // Cambiar el action del formulario para que apunte a la ruta de actualización
-            const formTransporte = document.getElementById('formTransporte');
-            formTransporte.setAttribute('action', `/actualizarTransporte/${selectedId}`);  // Ruta de actualización con el id
+              const formTransporte = document.getElementById('formTransporte');
+              const botonActualizar = document.getElementById('botonActualizar');
+              const botonEliminar = document.getElementById('botonEliminar');
+
+
+              // Cambia el `action` del formulario según el botón presionado
+              botonActualizar.addEventListener('click', (event) => {
+                  formTransporte.setAttribute('action', `/actualizarTransporte/${selectedId}`);
+                  formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
+              });
+
+              botonEliminar.addEventListener('click', (event) => {
+                  formTransporte.setAttribute('action', `/eliminarTransporte/${selectedId}`);
+                  formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
+              });
   
 
             document.querySelectorAll('.cargarTransporte').forEach(e => e.style.display = 'grid');
@@ -89,10 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Código para navegar por las sugerencias con flechas y seleccionar con Enter
-    inputNombre.addEventListener('keydown', (event) => { //console.log('evento antes de todos', event.key)
-        // if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-        //     event.preventDefault();  // Evitar que el navegador maneje las teclas
-        // }
+    inputNombre.addEventListener('keydown', (event) => {
         
         
         const suggestions = document.querySelectorAll('.suggestion');
@@ -127,16 +142,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                   // Cambiar el action del formulario para que apunte a la ruta de actualización
                 const formTransporte = document.getElementById('formTransporte');
-                formTransporte.setAttribute('action', `/actualizarTransporte/${selectedId}`);  // Ruta de actualización con el id
+                const botonActualizar = document.getElementById('botonActualizar');
+                const botonEliminar = document.getElementById('botonEliminar');
 
-                
+
+                // Cambia el `action` del formulario según el botón presionado
+                botonActualizar.addEventListener('click', (event) => {
+                    formTransporte.setAttribute('action', `/actualizarTransporte/${selectedId}`);
+                    formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
+                });
+
+                botonEliminar.addEventListener('click', (event) => {
+                    formTransporte.setAttribute('action', `/eliminarTransporte/${selectedId}`);
+                    formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
+                });
+
                 document.querySelectorAll('.cargarTransporte').forEach(e => e.style.display = 'grid');            
-                suggestionsContainer.style.display = 'none';                
+                suggestionsContainer.style.display = 'none';           
+                     
             }
         }
     });
-    
-    document.getElementById('botonCargar').style.display = 'none'
+    if (rutaActual != '/agregarTransporte') {
+        document.getElementById('botonCargar').style.display = 'none'
+        document.getElementById('botonCargar').disabled = true
+    }
+
     function highlightSuggestion(suggestion) {
         document.querySelectorAll('.suggestion').forEach(s => s.classList.remove('active'));
         suggestion.classList.add('active');

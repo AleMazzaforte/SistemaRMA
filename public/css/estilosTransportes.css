@@ -5,9 +5,7 @@
     --bordesInput: #7c7878;
     --accent-color: #e74c3c;
 }
-body {
-    background-color: #7c7878;
-}
+
 #formTransporte {
     display: grid;
     grid-template-columns: 150px 1fr;

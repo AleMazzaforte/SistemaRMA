@@ -4,6 +4,7 @@ const authController = require('../controladores/loginController');
 const mainController = require('../controladores/mainController');
 const usuarioController = require('../controladores/usuarioController.js');
 const cliente = require('../controladores/clientesController.js');
+const consulta = require('../controladores/consultaClienteController.js');
 const productosGeneralController = require('../controladores/productosGeneralController');
 const cargarRma = require('../controladores/cargarRmaController.js');
 const gestionarRma = require('../controladores/gestionarRmaController.js');
@@ -28,8 +29,11 @@ router.post('/agregarCliente', authController.isAuthenticated, cliente.agregarCl
 //Ruta para actualizar clientes
 router.post('/actualizarCliente', authController.isAuthenticated, cliente.postActualizarCliente);
 
-//Ruta para listar clientes
-router.get('/buscarCliente', cliente.getListarClientes);
+//Ruta para listar clientes consulta
+router.get('/buscarCliente', authController.isAuthenticated, cliente.getListarClientes);
+router.get('/consultaCliente', authController.isAuthenticated, consulta.getConsultaCliente);
+router.get('/getRmaCliente/:idCliente', authController.isAuthenticated, consulta.getListarRma);
+
 
 // RutaS para cargar productos 
 router.get('/cargarProductos', authController.isAuthenticated, productosGeneralController.cargarProductos);
