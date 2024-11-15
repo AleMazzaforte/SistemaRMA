@@ -6,31 +6,33 @@
 </head>
 <body>
     <%- include('partials/header') %>
+
     <br>
+    <h1>Cargar - Gestionar RMA</h1>
     <form id="formRma" action="/agregarRma" method="POST">
         <!-- Cliente -->
         <label for="clienteSearch">Cliente:</label>
-        <input type="text" id="clienteSearch" name="cliente" autocomplete="off" style="margin-bottom: -10px;">
+        <input type="text" id="clienteSearch" name="cliente" autocomplete="off" required style="margin-bottom: -10px;">
         <div class="divrelleno"></div>
         <div id="suggestionsContainer1" style="display: none;"></div>
 
         <!-- Modelo -->
         <label for="modelo" class="campoOculto">SKU:</label>
-        <input type="text" id="modelo" name="modelo" min="1" class="campoOculto" autocomplete="off"> 
+        <input type="text" id="modelo" name="modelo" min="1" class="campoOculto" required autocomplete="off"> 
         <div class="divrelleno"></div>
         <div id="suggestionsContainer2" style="display: none;"></div>
 
         <!-- Cantidad -->
         <label for="cantidad" class="campoOculto">Cantidad:</label>
-        <input type="number" id="cantidad" name="cantidad" min="1"  class="campoOculto">        
+        <input type="number" id="cantidad" name="cantidad" min="1" required class="campoOculto">        
     
         <!-- Marca -->
         <label for="marca" class="campoOculto">Marca:</label>
-        <input type="text" id="marca" name="marca" autocomplete="off"  class="campoOculto">
+        <input type="text" id="marca" name="marca" autocomplete="off" required class="campoOculto">
     
         <!-- Solicita -->
         <label for="solicita" class="campoOculto">Solicita:</label>
-        <input type="date" id="solicita" name="solicita" autocomplete="off" class="campoOculto">
+        <input type="date" id="solicita" name="solicita" autocomplete="off" required class="campoOculto">
     
         <!-- OP/Lote -->
         <label for="opLote" class="campoOculto">OP/Lote:</label>

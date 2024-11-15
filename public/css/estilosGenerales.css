@@ -6,10 +6,18 @@
     --accent-color: #e74c3c;        /* Rojo de acento */
 }
 
-h2 {
-    
-    margin: 0 auto;
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Títulos centrados */
+h1, h2 {
+    margin-top: 20px;
     text-align: center;
+    color: var(--primary-color);
 }
  
 #formCliente {
@@ -125,4 +133,22 @@ button {
     color: #0056b3;
 }
 
+button:hover {
+    background-color: var(--secondary-color);
+}
 
+#botonGuardarProducto {
+    background-color: var(--secondary-color);
+}
+
+#botonGuardarProducto:hover {
+    background-color: #27ae60; /* Verde más oscuro */
+}
+
+#botonEliminarProducto {
+    background-color: var(--accent-color);
+}
+
+#botonEliminarProducto:hover {
+    background-color: #c0392b; /* Rojo más oscuro */
+}

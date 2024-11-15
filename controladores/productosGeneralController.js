@@ -66,4 +66,5 @@ module.exports = {
             res.status(500).send('Error al eliminar el producto');
         }
     }
+    
 }

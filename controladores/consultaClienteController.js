@@ -1,4 +1,4 @@
-const conn = require('../bd/bd');
+const {conn} = require('../bd/bd');
 
 module.exports = {
     getConsultaCliente: (req, res) => {
@@ -7,12 +7,11 @@ module.exports = {
 
     getListarRma: async (req, res) => {
 
-        const { idCliente } = req.query;
+        const { idCliente } = req.params;
 
         try {
-            const rmaData = await db.query(`SELECT modelo, cantidad, marca, solicita, opLote, vencimiento, seEntrega, seRecibe, observaciones, nIngreso, nEgreso FROM r_m_a WHERE idCliente = ?`, [idCliente]);
-
-            if (rmaData.length > 0) {
+            const [rmaData] = await conn.query(`SELECT modelo, cantidad, marca, solicita, opLote, vencimiento, seEntrega, seRecibe, observaciones, nIngreso, nEgreso FROM r_m_a WHERE idCliente = ?`, [idCliente]);
+            if (rmaData.length > 0) { 
                 res.json(rmaData);
             } else {
                 res.json({ message: 'No hay RMA para este cliente' });

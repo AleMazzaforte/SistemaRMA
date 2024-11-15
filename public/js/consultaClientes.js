@@ -1,8 +1,7 @@
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const inputNombre = document.getElementById('nombre');
     const contenedorCLientes = document.getElementById('contenedorCLientes');
+    
     let selectedIndex = -1;  // Índice para seguimiento de selección
 
     // Escuchar el evento de input para realizar la búsqueda
@@ -19,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 contenedorCLientes.innerHTML = '';
 
                 if (clientes.length > 0) {
+                    // Muestra el contenedor de sugerencias
+                    contenedorCLientes.style.display = 'grid';
+
                     clientes.forEach((cliente, index) => {
                         const clienteDiv = document.createElement('div');
                         clienteDiv.classList.add('suggestion-item');
@@ -29,8 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Escuchar click en cada cliente
                         clienteDiv.addEventListener('click', () => {
                             inputNombre.value = cliente.nombre;  // Asigna nombre al input
-                            console.log('ID del cliente seleccionado:', clienteDiv.dataset.id);  // Muestra el id en consola
                             contenedorCLientes.innerHTML = '';  // Limpia contenedor
+                            contenedorCLientes.style.display = 'none';  // Oculta el contenedor al seleccionar un cliente
+                            fetchRmaData(clienteDiv.dataset.id);
                         });
 
                         contenedorCLientes.appendChild(clienteDiv);
@@ -43,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             contenedorCLientes.innerHTML = '';  // Limpiar resultados si hay menos de 2 caracteres
+            contenedorCLientes.style.display = 'none';  // Ocultar contenedor si hay menos de 2 caracteres
         }
     });
 
@@ -68,10 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Seleccionar elemento actual
             const selectedDiv = suggestionItems[selectedIndex];
             inputNombre.value = selectedDiv.textContent;
-            console.log('ID del cliente seleccionado:', selectedDiv.dataset.id);  // Muestra el id en consola
             contenedorCLientes.innerHTML = '';  // Limpiar contenedor
+            contenedorCLientes.style.display = 'none';  // Ocultar contenedor
             selectedIndex = -1;  // Reiniciar índice
             event.preventDefault();
+            fetchRmaData(selectedDiv.dataset.id);
         }
     });
 
@@ -87,40 +92,80 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Realiza fetch a los datos de RMA y los muestra en el contenedor
+    // Realiza fetch a los datos de RMA y los muestra en el contenedor
     async function fetchRmaData(idCliente) {
-        
         try {
-            const response = await fetch(`/getRmaCliente?idCliente=${idCliente}`);
+            const response = await fetch(`/getRmaCliente/${idCliente}`);
             const rmaData = await response.json();
-
-            contenedorDeRma.innerHTML = '';  // Limpiar el contenedor antes de mostrar nuevos resultados
-
+            const contenedorDeRma = document.getElementById('contenedorDeRma');
+            contenedorDeRma.innerHTML = ''; // Limpiar el contenedor antes de mostrar nuevos resultados
+            
             if (rmaData.message) {
-                alert(rmaData.message);  // Mostrar alerta si no hay datos
+                alert(rmaData.message); // Mostrar alerta si no hay datos
             } else {
-                rmaData.forEach((rma) => {
-                    const rmaDiv = document.createElement('div');
-                    rmaDiv.classList.add('rma-item');  // Clase para diseño en grid
-                    rmaDiv.innerHTML = `
-                        <div>Modelo: ${rma.modelo}</div>
-                        <div>Cantidad: ${rma.cantidad}</div>
-                        <div>Marca: ${rma.marca}</div>
-                        <div>Solicita: ${rma.solicita}</div>
-                        <div>OpLote: ${rma.opLote}</div>
-                        <div>Vencimiento: ${rma.vencimiento}</div>
-                        <div>Se Entrega: ${rma.seEntrega}</div>
-                        <div>Se Recibe: ${rma.seRecibe}</div>
-                        <div>Observaciones: ${rma.observaciones}</div>
-                        <div>Número de Ingreso: ${rma.nIngreso}</div>
-                        <div>Número de Egreso: ${rma.nEgreso}</div>
-                    `;
-                    contenedorDeRma.appendChild(rmaDiv);
+                // Crear tabla para los datos
+                const table = document.createElement('table');
+                table.classList.add('rma-table');
+
+                // Crear encabezado con los títulos
+                const headerRow = document.createElement('tr');
+                const titles = [
+                    'Modelo', 'Cantidad', 'Marca', 'Solicita', 'OpLote', 'Vencimiento',
+                    'Se Entrega', 'Se Recibe', 'Observaciones', 'Número de Ingreso', 'Número de Egreso', 'Acción'
+                ];
+                titles.forEach((title) => {
+                    const th = document.createElement('th');
+                    th.textContent = title;
+                    headerRow.appendChild(th);
                 });
+                table.appendChild(headerRow);
+
+                // Crear filas para cada producto
+                rmaData.forEach((rma) => {
+                    const row = document.createElement('tr');
+
+                    // Formatear las fechas
+                    const formatDate = (date) => {
+                        if (!date) return ''; // Si la fecha es null, devuelve vacío
+                        const d = new Date(date);
+                        const day = String(d.getDate()).padStart(2, '0');
+                        const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+                        const year = d.getFullYear();
+                        return `${day}/${month}/${year}`;
+                    };
+
+                    // Agregar celdas con datos
+                    const values = [
+                        rma.modelo || '', rma.cantidad || '', rma.marca || '',
+                        formatDate(rma.solicita), rma.opLote || '', formatDate(rma.vencimiento),
+                        formatDate(rma.seEntrega), formatDate(rma.seRecibe),
+                        rma.observaciones || '', rma.nIngreso || '', rma.nEgreso || ''
+                    ];
+
+                    values.forEach((value) => {
+                        const td = document.createElement('td');
+                        td.textContent = value;
+                        row.appendChild(td);
+                    });
+
+                    // Crear la celda con el botón de actualización
+                    const actionCell = document.createElement('td');
+                    const updateButton = document.createElement('input');
+                    updateButton.type = 'button';
+                    updateButton.value = 'Actualizar'
+                    updateButton.classList.add('update-button');
+                    actionCell.appendChild(updateButton);
+                    row.appendChild(actionCell);
+
+                    table.appendChild(row);
+                });
+                contenedorDeRma.appendChild(table);
             }
         } catch (error) {
             console.error('Error al obtener datos de RMA:', error);
         }
     }
+
 });
 
 

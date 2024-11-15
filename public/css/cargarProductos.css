@@ -1,0 +1,116 @@
+:root {
+    --primary-color: #3498db;       /* Azul principal */
+    --secondary-color: #2ecc71;    /* Verde secundario */
+    --background-color: #f5f5f5;   /* Fondo claro */
+    --border-color: #7c7878;       /* Texto oscuro */
+    --accent-color: #e74c3c;       /* Rojo de acento */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Títulos centrados */
+h1, h2 {
+    margin-top: 20px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+/* Formulario de productos */
+#formProducto {
+    display: grid;
+    grid-template-columns: 150px 1fr;  /* Primera columna para labels, segunda para inputs */
+    row-gap: 10px;                     /* Espaciado entre filas */
+    column-gap: 15px;                  /* Espaciado entre columnas */
+    max-width: 600px;
+    margin: 20px auto;                 /* Centrar el formulario */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Labels */
+label {
+    font-size: 1.2rem;
+    color: var(--border-color);
+    align-self: center;
+}
+
+/* Inputs */
+input {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Botones de acción */
+button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    grid-column: span 2; /* Los botones ocupan las dos columnas */
+    text-align: center;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+}
+
+#botonGuardarProducto {
+    background-color: var(--secondary-color);
+}
+
+#botonGuardarProducto:hover {
+    background-color: #27ae60; /* Verde más oscuro */
+}
+
+#botonEliminarProducto {
+    background-color: var(--accent-color);
+}
+
+#botonEliminarProducto:hover {
+    background-color: #c0392b; /* Rojo más oscuro */
+}
+
+/* Contenedor de sugerencias */
+#suggestionsContainer1 {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none; /* Oculto por defecto */
+}
+
+/* Elementos de sugerencia */
+.suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* General */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
