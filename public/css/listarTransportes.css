@@ -1,0 +1,33 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --background-color: #f5f5f5;
+    --bordesInput: #7c7878;
+    --accent-color: #707271;
+}
+
+
+
+
+.suggestions-container {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    position: relative;
+    z-index: 10;
+    max-height: 150px;
+    overflow-y: auto;
+    width: calc(100% - 0px); /* Ajusta al ancho del input */
+}
+
+.suggestion-item {
+    padding: 5px;
+    cursor: pointer;
+}
+.suggestion-item.active {
+    background-color: var(--bordesInput);
+    color: #333;
+}
+
+.suggestion-item:hover {
+    background-color: var(--bordesInput);
+}

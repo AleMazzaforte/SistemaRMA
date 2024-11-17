@@ -2,11 +2,11 @@ const { conn } =  require('../bd/bd');
 
 
 module.exports = {
-    agregarClienteForm: (req, res) => {
-        const { id, nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;
+    postAgregarClienteForm: (req, res) => {
+        const {  nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;
         try {
-            const query = `INSERT INTO clientes (id, nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-            conn.query(query, [id, nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro,  condicionDeEntrega], (err, results) => {
+            const query = `INSERT INTO clientes ( nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega)  VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            conn.query(query, [ nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro,  condicionDeEntrega], (err, results) => {
                 if (err) {
                     console.error('Error al ingresar  cliente', err);
                     return res.status(500).send('Error al cargar  cliente');
@@ -25,7 +25,7 @@ module.exports = {
         
         
         // Redirigir o enviar respuesta
-        res.send('Cliente agregado correctamente');
+        res.redirect('/')
     },
 
     getListarClientes: async (req, res) => {
@@ -33,6 +33,7 @@ module.exports = {
             const query = 'SELECT id, nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega FROM clientes';
             const [results] = await conn.query(query);  // Usando async/await
             res.json(results);  // Enviar resultados como JSON para que el frontend los reciba
+            return
         } catch (error) {
             console.error('Error al listar clientes:', error);
             res.status(500).send('Error al listar clientes');

@@ -1,9 +1,22 @@
 <%- include('partials/head') %>
     <title>Impresion de etiquetas</title>
     <link rel="stylesheet" href="/css/estilosGenerales.css">
+    <link rel="stylesheet" href="./css/estilosEtiquetas.css">
 </head>
 <body>
     <%- include('partials/header') %> 
     <h1>Imprimir etiquetas</h1>
+
+    <form action="/buscarCliente" id="formCliente">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" autocomplete="off">
+        <div></div>
+        <div id="suggestions-container"></div>
+    </form>
+   
+    
+    
+
+    <script src="./js/listarCLientesEtiquetas.js"></script>
 </body>
 </html>

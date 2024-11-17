@@ -13,6 +13,15 @@ body {
     padding: 0;
 }
 
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+header > * {
+    margin: 5px;
+}
+
 /* Títulos centrados */
 h1, h2 {
     margin-top: 20px;
@@ -28,6 +37,7 @@ h1, h2 {
     max-width: 600px;
     margin: 0 auto;
     margin-top: 20px;
+    
 }
 
 /* Estilos opcionales para mejorar la presentación */
