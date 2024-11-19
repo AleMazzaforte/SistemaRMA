@@ -25,7 +25,7 @@ router.get('/cargarUsuario', authController.isAuthenticated, usuarioController.c
 router.post('/cargarUsuario', authController.isAuthenticated, usuarioController.cargarUsuario);
 
 //Ruta para agregar clientes
-router.post('/agregarCliente', authController.isAuthenticated, cliente.agregarClienteForm);
+router.post('/agregarCliente', authController.isAuthenticated, cliente.postAgregarClienteForm);
 //Ruta para actualizar clientes
 router.post('/actualizarCliente', authController.isAuthenticated, cliente.postActualizarCliente);
 

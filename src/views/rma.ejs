@@ -8,7 +8,8 @@
     <%- include('partials/header') %>
 
     <br>
-    <h1>Cargar - Gestionar RMA</h1>
+    <h1 id="tituloCargar">Cargar - Gestionar RMA</h1>
+    
     <form id="formRma" action="/agregarRma" method="POST">
         <!-- Cliente -->
         <label for="clienteSearch">Cliente:</label>
@@ -99,5 +100,6 @@
     <script src="./js/listarClientesRma.js" type="module"></script>
     <script src="./js/listarProductosRMA.js"></script>
     <script src="./js/gestionarRMA.js"></script>
+    <script src="./js/imprimirEtiquetas.js"></script>
 </body>
 </html>

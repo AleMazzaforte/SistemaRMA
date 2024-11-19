@@ -1,0 +1,39 @@
+:root {
+    --primary-color: #3498db;       /* Azul principal */
+    --secondary-color: #2ecc71;     /* Verde secundario */
+    --background-color: #f5f5f5;    /* Fondo claro */
+    --bordesInput: #7c7878;          /* Texto oscuro */
+    --accent-color: #e74c3c;        /* Rojo de acento */
+}
+
+
+body {
+    background-color: var(--background-color);
+}
+
+input {
+    padding: 5px;
+}
+
+#suggestions-container {
+    position: relative;
+    top: 0px;
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: white;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.suggestion-item {
+    padding: 3px;
+    cursor: pointer;
+    text-align: left;
+}
+
+
+.suggestion-item:hover, .active {
+    background-color: var(--bordesInput);
+}
