@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const rutas = require('./rutas/rutas.js');
 const session = require('express-session');
-require('dotenv').config();
+
 const cors = require('cors');
 
 
@@ -16,8 +17,8 @@ const app = express();
 app.use(session({
     secret: process.env.SECRET_KEY,  
     resave: false,  // No vuelve a guardar la sesión si no se modifica
-    saveUninitialized: false,  // No guarda sesiones no inicializadas
-    cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }  // Si estás en producción, cambia a `true` solo si usas HTTPS
+    saveUninitialized: true,  // No guarda sesiones no inicializadas
+    
 }));
 
 
