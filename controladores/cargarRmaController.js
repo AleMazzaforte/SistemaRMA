@@ -1,5 +1,7 @@
 const { conn } = require('../bd/bd');
 
+
+
 module.exports = {
 
     getCargarRma:  async (req, res) => {

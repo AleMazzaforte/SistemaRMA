@@ -1,5 +1,7 @@
 const {conn} = require('../bd/bd');
 
+
+
 module.exports = {
     getConsultaCliente: (req, res) => {
         res.render('consultaCliente', { title: 'Consulta' });

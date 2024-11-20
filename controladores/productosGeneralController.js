@@ -3,6 +3,7 @@ const { conn } = require('../bd/bd');
 
 
 
+
 module.exports = { 
     cargarProductos: (req, res) => {
     // Renderiza el archivo EJS

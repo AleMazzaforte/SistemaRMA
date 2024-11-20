@@ -1,6 +1,8 @@
 const { conn } = require('../bd/bd');  // Conexión a la base de datos
 const bcrypt = require('bcrypt');
 
+
+
 // Función para mostrar el formulario de cargar usuario
 module.exports = {
     cargarUsuarioForm: (req, res) => {

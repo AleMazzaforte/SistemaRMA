@@ -1,6 +1,7 @@
 const { conn } =  require('../bd/bd');
 
 
+
 module.exports = {
     postAgregarClienteForm: (req, res) => {
         const {  nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;
