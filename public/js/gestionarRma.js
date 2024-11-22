@@ -1,5 +1,3 @@
-
-
 async function cargarProductos(idCliente) {
     try {  
         const response = await fetch(`/listarProductosRma/${idCliente}`);
@@ -10,28 +8,23 @@ async function cargarProductos(idCliente) {
 
         // Verifica si hay productos asociados
         if (productos.length > 0) {
-            
             // Mostrar el formulario
             document.getElementById('formProductos').style.display = 'grid';
 
             // Llenar la tabla con los datos de los productos
-                
-                productos.forEach((producto, index) => {
-                     
+            productos.forEach((producto) => {
                 const formatDate = date => {
                     const [day, month, year] = date.split('/');
                     return `${year}-${month}-${day}`;
                 };
 
                 const row = document.createElement('tr');
-                
                 row.dataset.id = producto.idRma; // Colocar idRma en el dataset de la fila
                 row.innerHTML = `
-                    
-                    <td><input type="text" value="${producto.modelo}" name="modelo" /></td>
-                    <td><input type="number" value="${producto.cantidad}" name="cantidad" /></td>
-                    <td><input type="text" value="${producto.marca}" name="marca" /></td>
-                    <td><input type="date" value="${producto.solicita ? formatDate(producto.solicita) : ''}" name="solicita" /></td>
+                    <td><input type="text" value="${producto.modelo}" name="modelo" readonly /></td>
+                    <td><input type="number" value="${producto.cantidad}" name="cantidad" readonly /></td>
+                    <td><input type="text" value="${producto.marca}" name="marca" readonly /></td>
+                    <td><input type="date" value="${producto.solicita ? formatDate(producto.solicita) : ''}" name="solicita" readonly /></td>
                     <td><input type="text" value="${producto.opLote}" name="opLote" /></td>
                     <td><input type="date" value="${producto.vencimiento ? formatDate(producto.vencimiento) : ''}" name="vencimiento" /></td>
                     <td><input type="date" value="${producto.seEntrega ? formatDate(producto.seEntrega) : ''}" name="seEntrega" /></td>
@@ -39,18 +32,9 @@ async function cargarProductos(idCliente) {
                     <td><input type="text" value="${producto.observaciones}" name="observaciones" /></td>
                     <td><input type="text" value="${producto.nIngreso}" name="nIngreso" /></td>
                     <td><input type="text" value="${producto.nEgreso}" name="nEgreso" /></td>
-
                     <td><button type="button" onclick="eliminarProducto(${producto.idRma})">Eliminar</button></td>
                 `;
                 productosTableBody.appendChild(row);
-            });
-
-            // Evento para detectar cambios en las celdas
-            const inputs = productosTableBody.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.addEventListener('input', () => {
-                    document.getElementById('botonActualizarRma').style.display = 'grid';
-                });
             });
 
         } else { 
@@ -64,60 +48,71 @@ async function cargarProductos(idCliente) {
     }
 }
 
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const productosTableBody = document.getElementById('productosTableBody');
     const botonActualizarRma = document.getElementById('botonActualizarRma');
     
-    // Almacena los cambios para actualizarlos de una sola vez
     const cambiosPendientes = new Map();
 
-    // Detecta cambios en los inputs y habilita el botón de actualización
+    // Detecta cambios en los inputs y almacena toda la fila en cambiosPendientes
     productosTableBody.addEventListener('input', (event) => {
         const fila = event.target.closest('tr');
         const idRma = fila.dataset.id;
-        const campo = event.target.name;
-        const valor = event.target.value;
 
-        // Registrar cambio en el campo modificado
-        if (!cambiosPendientes.has(idRma)) {
-            cambiosPendientes.set(idRma, {});
-        }
-        cambiosPendientes.get(idRma)[campo] = valor;
+        // Captura todos los valores de la fila
+        const inputs = fila.querySelectorAll('input');
+        const filaCompleta = {};
+        inputs.forEach(input => {
+            filaCompleta[input.name] = input.value === '' ? null:input.value;
+        });
+        console.log('CAMBIOS PENDIENTES', cambiosPendientes)
+        // Almacena toda la fila en cambiosPendientes
+        cambiosPendientes.set(idRma, filaCompleta);
 
-        // Mostrar botón de actualización
+        // Muestra el botón de actualización
         botonActualizarRma.style.display = 'inline-block';
     });
 
     // Evento para enviar los cambios
     botonActualizarRma.addEventListener('click', async () => {
-        let actualizacionesExitosas = true;
-        for (let [idRma, cambios] of cambiosPendientes) {
-            
-            try { 
+        let actualizacionesExitosas = true; // Bandera para verificar el estado de todas las actualizaciones
+    
+        for (let [idRma, datosFila] of cambiosPendientes) {
+            try {
                 const response = await fetch(`/actualizarProductoRma/${idRma}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(cambios)
+                    body: JSON.stringify(datosFila),
                 });
-                
+    
                 if (!response.ok) throw new Error('Error al actualizar el producto');
+                
+                // Si se actualiza correctamente, eliminar de cambios pendientes
                 cambiosPendientes.delete(idRma);
             } catch (error) {
                 console.error(`Error al actualizar producto ${idRma}:`, error);
-                actualizacionesExitosas = false;
+                actualizacionesExitosas = false; // Marcar como fallo en caso de error
             }
         }
+    
+        // Mostrar mensajes dependiendo del resultado de las actualizaciones
         if (actualizacionesExitosas) {
             alert('Los productos han sido actualizados correctamente.');
+            // Recargar la tabla con los datos actualizados
+            const idCliente = document.getElementById('idCliente').value;
+            cargarProductos(idCliente);
         } else {
             alert('Hubo un error al actualizar algunos productos.');
         }
-        botonActualizarRma.style.display = 'none';
+    
+        // Ocultar el botón si no quedan cambios pendientes
+        if (cambiosPendientes.size === 0) {
+            botonActualizarRma.style.display = 'none';
+        }
     });
+    
 });
+
 
 // *************************************************************
 //               Función para eliminar registros
