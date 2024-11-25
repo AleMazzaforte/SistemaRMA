@@ -1,20 +1,25 @@
-
+let activeIndex = -1;
 
 document.addEventListener('DOMContentLoaded', () => {
     const formCliente = document.getElementById('formCliente');
     const editButton = document.getElementById('editButton');
     const clienteSearch = document.getElementById('clienteSearch');
+    const clienteSearchInput = document.getElementById('clienteSearchInput');
+    const labelClienteSearch = document.getElementById('labelClienteSearch');
     const suggestionsContainer = document.querySelector('#suggestionsContainer1');
     const botonCargar = document.getElementById('botonCargar');
     const botonActualizar = document.getElementById('botonActualizar');
     const botonEliminar = document.getElementById('botonEliminar');
+    const tituloCargarCliente = document.getElementById('tituloCargarCliente');
     let clientes = [];
     
     // Ocultar el formulario y mostrar el buscador al hacer clic en Editar
     editButton.addEventListener('click', () => {
         formCliente.style.display = 'none';
+        tituloCargarCliente.innerHTML = 'Actualizar cliente'
         setTimeout(() => {
-            clienteSearch.style.display = 'block'; // Muestra el buscador después del retraso
+            clienteSearch.style.display = 'grid'; // Muestra el buscador después del retraso
+            labelClienteSearch.style.display = 'grid';
             clienteSearch.focus();
             fetchClientes();
         }, 200); 
@@ -30,10 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error al obtener clientes:', error);
         }
     }
-
+    
     // Filtrar y mostrar coincidencias en tiempo real
-    clienteSearch.addEventListener('input', () => {
-        const searchTerm = clienteSearch.value.toLowerCase();
+    clienteSearchInput.addEventListener('input', () => {
+        const searchTerm = clienteSearchInput.value.toLowerCase();
         const matches = clientes.filter(cliente =>
             cliente.nombre.toLowerCase().includes(searchTerm) ||
             cliente.id.toString().includes(searchTerm)
@@ -46,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         suggestionsContainer.innerHTML = '';
         setTimeout(() => {
             if (matches.length) {
-                suggestionsContainer.style.display = 'block';
+                suggestionsContainer.style.display = 'grid';
             } else {
                 suggestionsContainer.style.display = 'none';
             }
@@ -54,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         matches.forEach(cliente => {
             const suggestion = document.createElement('div');
-            suggestion.insertAdjacentHTML('beforeend', `${cliente.nombre} (${cliente.id})`);
+            suggestion.insertAdjacentHTML('beforeend', `${cliente.nombre} `);
             suggestion.classList.add('suggestion-item');
             suggestion.addEventListener('click', () => selectCliente(cliente));
             suggestionsContainer.appendChild(suggestion);
@@ -87,6 +92,38 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('condicionDeEntrega').value = cliente.condicionDeEntrega;
             
         }, 200); 
+    }
+
+    // Manejar navegación por teclado
+    clienteSearchInput.addEventListener('keydown', (event) => {
+        const suggestions = Array.from(suggestionsContainer.querySelectorAll('.suggestion-item'));
+        if (!suggestions.length) return;
+
+        if (event.key === 'ArrowDown') {
+            activeIndex = (activeIndex + 1) % suggestions.length; // Siguiente ítem
+            updateActiveItem(suggestions);
+        } else if (event.key === 'ArrowUp') {
+            activeIndex = (activeIndex - 1 + suggestions.length) % suggestions.length; // Ítem anterior
+            updateActiveItem(suggestions);
+        } else if (event.key === 'Enter') {
+            event.preventDefault();
+            if (activeIndex >= 0) {
+                const cliente = clientes[activeIndex];
+                selectCliente(cliente);
+            }
+        }
+    });
+
+    // Actualizar el ítem activo
+    function updateActiveItem(suggestions) {
+        suggestions.forEach((item, index) => {
+            if (index === activeIndex) {
+                item.classList.add('active'); // Clase para destacar
+                item.scrollIntoView({ block: 'nearest' }); // Mantener visible
+            } else {
+                item.classList.remove('active');
+            }
+        });
     }
 });
 

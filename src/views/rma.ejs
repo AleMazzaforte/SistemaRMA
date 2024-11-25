@@ -8,7 +8,7 @@
     <%- include('partials/header') %>
 
     <br>
-    <h1 id="tituloCargar">Cargar - Gestionar RMA</h1>
+    <h1 id="tituloCargar">Cargar RMA</h1>
     
     <form id="formRma" action="/agregarRma" method="POST">
         <!-- Cliente -->
@@ -71,13 +71,13 @@
     </form>
     
     <!-- Formulario para mostrar la lista de productos asociados al cliente -->
-    <form id="formProductos" style="display: none; grid-template-columns: repeat(5, 1fr); gap: 10px;">
+    <form id="formProductos" style="display: none; grid-template-columns: repeat(12, 1fr);">
         
             <table>
                 <thead>
                     <tr>
                         <th>Modelo</th>
-                        <th>Cantidad</th>
+                        <th>Cant</th>
                         <th>Marca</th>
                         <th>Solicita</th>
                         <th>OP/Lote</th>

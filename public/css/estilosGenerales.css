@@ -59,7 +59,7 @@ input {
 button {
     grid-column: span 2;
     justify-self: center;
-    padding: 10px 20px;
+    padding: 10px 10px;
 }
 
 /* Contenedor de lista de clientes*/
@@ -160,5 +160,13 @@ button:hover {
 }
 
 #botonEliminarProducto:hover {
+    background-color: #c0392b; /* Rojo más oscuro */
+}
+
+.botonEliminar {
+    background-color: var(--accent-color);
+}
+
+.botonEliminar:hover {
     background-color: #c0392b; /* Rojo más oscuro */
 }

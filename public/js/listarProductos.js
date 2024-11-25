@@ -1,4 +1,3 @@
-console.log('archivo enlazado')
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -67,7 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
         suggestions.forEach((suggestion, index) => {
             suggestion.classList.toggle('active', index === activeSuggestionIndex);
         });
+    
+        // Asegurar que el item activo esté visible
+        const activeSuggestion = suggestions[activeSuggestionIndex];
+        if (activeSuggestion) {
+            activeSuggestion.scrollIntoView({
+                behavior: 'smooth', 
+                block: 'nearest', // 'nearest' asegura que solo se hace scroll si el item está fuera de la vista
+            });
+        }
     }
+    
 
     skuInput.addEventListener('input', () => {
         const searchTerm = skuInput.value.toLowerCase();
@@ -116,6 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     botonActualizar.addEventListener('click', () => {
+
+        const confirmacion = confirm("¿Estás seguro de que deseas modificar este valor?");
+    
+        if (!confirmacion) {
+            console.log("La acción de eliminación fue cancelada.");
+            return; // Detén la ejecución si el usuario cancela
+        }
+
         const searchTerm = skuInput.value.toLowerCase();
         const matches = productos.filter(producto => producto.sku.toLowerCase() === searchTerm);
         if (matches.length > 0) {
@@ -165,6 +182,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     botonEliminar.addEventListener('click', async () => {
         const sku = skuInput.value; // Obtener el SKU del input
+       
+        if (!sku) { 
+            return
+        }
+        const confirmacion = confirm("¿Estás seguro de que deseas eliminar este valor?");
+    
+        if (!confirmacion) {
+            console.log("La acción de eliminación fue cancelada.");
+            return; // Detén la ejecución si el usuario cancela
+        }
+
         try {
             const response = await fetch('/eliminarProducto', {
                 method: 'POST',

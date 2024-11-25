@@ -42,22 +42,27 @@ module.exports = {
     },
 
     postActualizarCliente: (req, res) => {
-        const { id, nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;
+        const { nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;
+        const { id } = req.params; // Obtener el ID del cliente desde los parámetros de la URL
         console.log('Datos recibidos:', req.body);
-        try {
+        console.log('ID recibido:', id);
+    
+        try { 
             const query = `UPDATE clientes SET nombre = ?, cuit = ?, provincia = ?, ciudad = ?, domicilio = ?, telefono = ?, transporte = ?, seguro = ?, condicionDeEntrega = ? WHERE id = ?`;
-            conn.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, id], (err, results) => { console.log('Resultado de la queryentes del if:', results)
+            console.log('Consulta SQL:', query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, id]); // Agrega este log
+            conn.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, id], (err, results) => {
+                console.log( 'result',  results)
                 if (err) {
                     console.error('Error al actualizar cliente:', err);
                     return res.status(500).send('Error al actualizar cliente');
                 }
-                console.log('Resultado de la query:', results)
-                console.log('Enviando respuesta JSON:', { success: true, message: 'Cliente actualizado correctamente' });
-                res.json({ success: true, message: 'Cliente actualizado correctamente' });
+                console.log('Resultado de la query:', results);
+                res.json({message: 'Cliente actualizado correctamente'})
             });
         } catch (error) {
             console.error('Error interno del servidor:', error);
             res.status(500).send('Error interno del servidor');
         }
     },
+    
 }

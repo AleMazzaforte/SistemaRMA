@@ -1,6 +1,7 @@
 <%- include('partials/head') %>
     <link rel="stylesheet" href="./css/estilosGenerales.css">
     <link rel="stylesheet" href="./css/listarTransportes.css">
+    <link rel="stylesheet" href="./css/listarClientes.css">
     <title>Sistema RMA - Clientes</title>
 </head>
 <body>
@@ -8,8 +9,8 @@
     <h1>Gestión Clientes</h1>
     <h2 id="tituloCargarCliente">Cargar cliente</h2>
     <form action="/agregarCliente" method="POST" id="formCliente">
-        <!-- Campo para ID (manual durante desarrollo) -->
         
+        <input type="hidden" id="id" name="id" value="">
         
 
         <!-- Nombre -->
@@ -56,11 +57,12 @@
         <button id="botonActualizar" class="botonEdicion">Actualizar</button>
         <button id="botonEliminar" class="botonEdicion">Eliminar</button>
     </form>
- 
-    
-    <input type="text" id="clienteSearch" placeholder="Buscar cliente..." style="display: none;" class="clienteSearch">
-    <div id="suggestionsContainer1" class="clienteSearch"></div>
-    
+    <div style="display: none" id="clienteSearch">
+        <label for="clienteSearch"  id="labelClienteSearch">Nombre: </label>
+        <input type="text"  name="clienteSearch" placeholder="Buscar cliente..." id="clienteSearchInput" class="clienteSearch">
+        <div></div>
+        <div id="suggestionsContainer1" class="clienteSearch" ></div>
+    </div>
 
     <script src="./js/listarClientes.js"></script>
     <script src="./js/actualizarClientes.js"></script>

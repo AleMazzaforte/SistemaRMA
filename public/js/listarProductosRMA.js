@@ -58,6 +58,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             suggestion.classList.toggle('active', i === index);
         });
         activeSuggestionIndex1 = index;
+        scrollToActiveSuggestion(); // Asegura que la sugerencia activa esté visible
+    }
+
+    // Desplaza el contenedor para que la sugerencia activa esté siempre visible
+    function scrollToActiveSuggestion() {
+        const suggestions1 = suggestionsContainer2.querySelectorAll('.suggestion-item');
+        const activeSuggestion = suggestions1[activeSuggestionIndex1];
+        if (activeSuggestion) {
+            const containerRect = suggestionsContainer2.getBoundingClientRect();
+            const suggestionRect = activeSuggestion.getBoundingClientRect();
+
+            // Verifica si la sugerencia está fuera del rango visible
+            if (suggestionRect.top < containerRect.top) {
+                suggestionsContainer2.scrollTop -= (containerRect.top - suggestionRect.top);
+            } else if (suggestionRect.bottom > containerRect.bottom) {
+                suggestionsContainer2.scrollTop += (suggestionRect.bottom - containerRect.bottom);
+            }
+        }
     }
 
     // Controla las teclas de flecha para navegar en las sugerencias
@@ -82,6 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Escucha el input para SKU y muestra sugerencias
     modelo.addEventListener('input', () => {
         const searchTerm = modelo.value.toLowerCase();
+        console.log('sku', productos)
         const matches = productos.filter(producto => producto.sku.toLowerCase().includes(searchTerm));
         displaySuggestions(matches);
     });

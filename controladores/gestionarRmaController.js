@@ -92,32 +92,30 @@ module.exports = {
     postActualizarCliente: async (req, res) => {
         const idRma = req.params.idRma;
         const { modelo, cantidad, marca, solicita, opLote, vencimiento, seEntrega, seRecibe, observaciones, nIngreso, nEgreso } = req.body;
-
-        // Log para verificar los datos que se reciben
-        
+    
         try {
-            
             const query = `
                 UPDATE r_m_a
                 SET modelo = ?, cantidad = ?, marca = ?, solicita = ?, opLote = ?, 
                     vencimiento = ?, seEntrega = ?, seRecibe = ?, observaciones = ?, 
                     nIngreso = ?, nEgreso = ?
                 WHERE idRma = ?`;
-
-            
-            conn.query(query, [modelo, cantidad, marca, solicita, opLote, vencimiento, seEntrega, seRecibe, observaciones, nIngreso, nEgreso, idRma], (error, results) => {
-                if (error) {
-                    console.error('Error al actualizar producto:', error);
-                    return res.status(500).json({ error: 'Error al actualizar producto' });
-                }
-                console.log('Producto actualizado con éxito');
-                res.json({ success: true });
-            });
+    
+            const [result] = await conn.execute(query, [
+                modelo, cantidad, marca, solicita, opLote, vencimiento,
+                seEntrega, seRecibe, observaciones, nIngreso, nEgreso, idRma
+            ]);
+    
+            if (result.affectedRows > 0) {
+                res.status(200).json({ success: true, message: 'Producto actualizado correctamente.' });
+            } else {
+                res.status(404).json({ success: false, message: 'Producto no encontrado.' });
+            }
         } catch (error) {
-            console.error('Error al procesar la actualización:', error);
-            res.status(500).json({ error: 'Error al procesar la actualización' });
+            console.error('Error al actualizar producto:', error);
+            res.status(500).json({ success: false, message: 'Error al actualizar producto.' });
         }
-    },
+    },        
 
     postEliminarProducto: async (req, res) => {
         const { idRma } = req.params;

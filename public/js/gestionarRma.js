@@ -1,3 +1,10 @@
+const direccionActual = window.location.pathname;
+if (direccionActual === '/gestionarRma') {
+    const h1 = document.getElementById('tituloCargar');
+    h1.innerHTML = '';
+    h1.insertAdjacentHTML('beforeend', 'Gestionar Rma');
+}
+
 async function cargarProductos(idCliente) {
     try {  
         const response = await fetch(`/listarProductosRma/${idCliente}`);
@@ -30,12 +37,25 @@ async function cargarProductos(idCliente) {
                     <td><input type="date" value="${producto.seEntrega ? formatDate(producto.seEntrega) : ''}" name="seEntrega" /></td>
                     <td><input type="date" value="${producto.seRecibe ? formatDate(producto.seRecibe) : ''}" name="seRecibe" /></td>
                     <td><input type="text" value="${producto.observaciones}" name="observaciones" /></td>
-                    <td><input type="text" value="${producto.nIngreso}" name="nIngreso" /></td>
-                    <td><input type="text" value="${producto.nEgreso}" name="nEgreso" /></td>
-                    <td><button type="button" onclick="eliminarProducto(${producto.idRma})">Eliminar</button></td>
+                    <td><input type="number" value="${producto.nIngreso}" name="nIngreso" /></td>
+                    <td><input type="number" value="${producto.nEgreso}" name="nEgreso" /></td>
+                    <td><button type="button" class="botonActualizar" data-id="${producto.idRma}">Actualizar</button></td>
+                    <td><button type="button" onclick="eliminarProducto(${producto.idRma})" class= 'botonEliminar'>Eliminar</button></td>
                 `;
                 productosTableBody.appendChild(row);
+
+                // Al cargar el producto, guarda los datos originales de la fila
+                const inputs = row.querySelectorAll('input');
+                const rowId = row.dataset.id; // El ID del producto
+                originalData[rowId] = Array.from(inputs).reduce((acc, input) => {
+                    acc[input.name] = input.value.trim() === '' ? null : input.value;
+                    return acc;
+                }, {});
+
             });
+
+
+
 
         } else { 
             alert('El cliente seleccionado no tiene productos asociados.');
@@ -48,70 +68,78 @@ async function cargarProductos(idCliente) {
     }
 }
 
+//escuchar los cambios y actualizar
+let originalData = {}
 document.addEventListener('DOMContentLoaded', () => {
     const productosTableBody = document.getElementById('productosTableBody');
-    const botonActualizarRma = document.getElementById('botonActualizarRma');
-    
-    const cambiosPendientes = new Map();
 
-    // Detecta cambios en los inputs y almacena toda la fila en cambiosPendientes
-    productosTableBody.addEventListener('input', (event) => {
-        const fila = event.target.closest('tr');
-        const idRma = fila.dataset.id;
+     // Objeto global para almacenar los datos originales de cada fila
+      
 
-        // Captura todos los valores de la fila
-        const inputs = fila.querySelectorAll('input');
-        const filaCompleta = {};
-        inputs.forEach(input => {
-            filaCompleta[input.name] = input.value === '' ? null:input.value;
-        });
-        console.log('CAMBIOS PENDIENTES', cambiosPendientes)
-        // Almacena toda la fila en cambiosPendientes
-        cambiosPendientes.set(idRma, filaCompleta);
+     // Al cargar la página, guardar los datos originales de todas las filas
+     const filas = productosTableBody.querySelectorAll('tr');
+     filas.forEach(row => {
+         const inputs = row.querySelectorAll('input');
+         const rowId = row.dataset.id; // Suponiendo que cada fila tiene un atributo data-id con el ID del producto
+ 
+         
+     });
+     
+    // Escucha eventos de clic en los botones de actualizar
+    productosTableBody.addEventListener('click', (event) => {
+        if (event.target.classList.contains('botonActualizar')) {
+            const button = event.target;
+            const row = button.closest('tr'); // Obtener la fila donde está el botón
+            if (!row) return;
 
-        // Muestra el botón de actualización
-        botonActualizarRma.style.display = 'inline-block';
-    });
+            const idRma = button.dataset.id; // Obtener el ID del producto
+            const inputs = row.querySelectorAll('input'); // Obtener los inputs de la fila
 
-    // Evento para enviar los cambios
-    botonActualizarRma.addEventListener('click', async () => {
-        let actualizacionesExitosas = true; // Bandera para verificar el estado de todas las actualizaciones
-    
-        for (let [idRma, datosFila] of cambiosPendientes) {
-            try {
-                const response = await fetch(`/actualizarProductoRma/${idRma}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(datosFila),
-                });
-    
-                if (!response.ok) throw new Error('Error al actualizar el producto');
-                
-                // Si se actualiza correctamente, eliminar de cambios pendientes
-                cambiosPendientes.delete(idRma);
-            } catch (error) {
-                console.error(`Error al actualizar producto ${idRma}:`, error);
-                actualizacionesExitosas = false; // Marcar como fallo en caso de error
-            }
-        }
-    
-        // Mostrar mensajes dependiendo del resultado de las actualizaciones
-        if (actualizacionesExitosas) {
-            alert('Los productos han sido actualizados correctamente.');
-            // Recargar la tabla con los datos actualizados
-            const idCliente = document.getElementById('idCliente').value;
-            cargarProductos(idCliente);
-        } else {
-            alert('Hubo un error al actualizar algunos productos.');
-        }
-    
-        // Ocultar el botón si no quedan cambios pendientes
-        if (cambiosPendientes.size === 0) {
-            botonActualizarRma.style.display = 'none';
+            
+
+            // Construir un objeto con los datos de la fila
+            const datosFila = Array.from(inputs).reduce((acc, input) => {
+                acc[input.name] = input.value.trim() === '' ? null : input.value;
+                return acc;
+            }, {});
+
+            // Llamar a la función actualizarProducto
+            actualizarProducto(idRma, datosFila);
         }
     });
-    
 });
+
+
+// Función para actualizar producto en el servidor
+async function actualizarProducto(idRma, datosFila) {
+    
+     // Obtener los datos originales de la fila
+     const originalRowData = originalData[idRma];
+     // Comparar los datos actuales con los originales
+     const isChanged = Object.keys(datosFila).some(key => datosFila[key] !== originalRowData[key]);
+ 
+     if (!isChanged) {
+         return; // Si no hay cambios, no hacer nada
+     }
+
+    try {
+        const response = await fetch(`/actualizarProductoRma/${idRma}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datosFila),
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al actualizar producto.');
+        }
+
+        alert('Producto actualizado con éxito.');
+    } catch (error) {
+        console.error('Error al actualizar el producto:', error);
+        alert('Hubo un error al actualizar el producto.');
+    }
+}
+
 
 
 // *************************************************************
@@ -120,11 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function eliminarProducto(idRma) {
     
-
-    if (!idRma) {
-        console.error('ID de producto no proporcionado');
-        return;
+    
+    const confirmacion = confirm("¿Estás seguro de que deseas eliminar este valor?");
+    
+    if (!confirmacion) {
+        console.log("La acción de eliminación fue cancelada.");
+        return; // Detén la ejecución si el usuario cancela
     }
+   
 
     try {
         
@@ -139,6 +170,7 @@ async function eliminarProducto(idRma) {
         // Selecciona el elemento correctamente, usando data-idRma
         const rowElement = document.querySelector(`tr[data-id="${idRma}"]`);
         if (rowElement) {
+            
             rowElement.remove();
             alert('Producto eliminado exitosamente.');
         } else {
