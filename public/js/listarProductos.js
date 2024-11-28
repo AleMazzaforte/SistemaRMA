@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 descripcionInput.value = producto.descripcion;
                 botonActualizar.style.display = 'none';
                 botonGuardar.style.display = 'inline-block';
-                console.log('producto dentro de matches.length', producto);
             } else {
                 console.error('El producto seleccionado no tiene un ID.');
             }

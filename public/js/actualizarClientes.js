@@ -1,36 +1,56 @@
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const botonActualizar = document.getElementById('botonActualizar');
-
-    // Escuchar el evento click del botón "Actualizar"
+    
     botonActualizar.addEventListener('click', async (event) => {
-        event.preventDefault(); // Evitar el comportamiento de envío predeterminado
-        
-        const formData = new FormData(document.getElementById('formCliente'));
-        const id = document.getElementById('id').value; // Obtener el ID del cliente desde el formulario
-        console.log('ID', id)
+        event.preventDefault();
+
+        const id = document.getElementById('id').value;
+        const nombre = document.getElementById('nombre').value;
+        const cuit = document.getElementById('cuit').value;
+        const provincia = document.getElementById('provincia').value;
+        const ciudad = document.getElementById('ciudad').value;
+        const domicilio = document.getElementById('domicilio').value;
+        const telefono = document.getElementById('telefono').value;
+        const transporte = document.getElementById('transporte').value;
+        const seguro = document.getElementById('seguro').value;
+        const condicionDeEntrega = document.getElementById('condicionDeEntrega').value;
+
         try {
-            console.log('Enviando solicitud de actualización');
             const response = await fetch(`/actualizarCliente/${id}`, {
-                method: 'POST', 
-                body: new URLSearchParams(formData), // Envía los datos en formato URL
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                credentials: 'same-origin'
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nombre,
+                    cuit,
+                    provincia,
+                    ciudad,
+                    domicilio,
+                    telefono,
+                    transporte,
+                    seguro,
+                    condicionDeEntrega,
+                }),
             });
-            console.log('Código de estado de la respuesta:', response.status);
+            
             if (response.ok) {
                 const result = await response.json();
-                console.log('Resultado de la actualización:', result);
-                alert(result.message);
-                window.location.href = '/';  // Redirige a la página principal
-
+                if (result.message) {
+                    alert(result.message); // Muestra el mensaje del servidor
+                    location.reload(); // Recarga la página
+                } else {
+                    console.error('Respuesta sin mensaje:', result);
+                    alert('Error: no se recibió un mensaje de confirmación');
+                }
             } else {
+                console.error('Error al actualizar:', response.statusText);
                 alert('Error al actualizar el cliente');
-                console.error('Error en la respuesta del servidor:', response.statusText);
             }
+            
         } catch (error) {
-            console.error('Error en la actualización del cliente:', error);
+            console.error('Error al actualizar cliente:', error);
+            alert('Error al actualizar cliente');
         }
     });
 });

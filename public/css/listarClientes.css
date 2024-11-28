@@ -8,9 +8,8 @@
 
 /* Estilo para el contenedor del buscador */
 #clienteSearch {
-    width: 300px;
-    display: none;
-    grid-template-columns: auto;
+    width: 400px;
+    grid-template-columns: auto 1fr;
     gap: 10px;
     margin: 20px auto;
 }

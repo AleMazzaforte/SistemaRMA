@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     editButton.addEventListener('click', () => {
         formCliente.style.display = 'none';
         tituloCargarCliente.innerHTML = 'Actualizar cliente'
+        document.getElementById('id').style.display = 'block'
         setTimeout(() => {
             clienteSearch.style.display = 'grid'; // Muestra el buscador después del retraso
             labelClienteSearch.style.display = 'grid';

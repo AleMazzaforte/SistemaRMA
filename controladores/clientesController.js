@@ -1,33 +1,32 @@
-const { conn } =  require('../bd/bd');
+const { conn } = require('../bd/bd');
 
+conn.getConnection((err, connection) => {
+    if (err) {
+        console.error('Error al conectar a la base de datos:', err);
+        return;
+    }
+    console.log('Conexión a la base de datos establecida');
+    connection.release(); // Liberar la conexión
+});
 
 
 module.exports = {
-    postAgregarClienteForm: (req, res) => {
-        const {  nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;
-        try {
-            const query = `INSERT INTO clientes ( nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega)  VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-            conn.query(query, [ nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro,  condicionDeEntrega], (err, results) => {
-                if (err) {
-                    console.error('Error al ingresar  cliente', err);
-                    return res.status(500).send('Error al cargar  cliente');
-                }
-                res.redirect('/')
-                return;
-            });
 
-        }
+    postAgregarClienteForm: async (req, res) => {
+        const { nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;  
+        try {
+            const query = `INSERT INTO clientes (nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`; 
+           
+             
+            const [results] = await conn.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega]); 
+            res.redirect('/'); 
+        } 
         catch (error) {
-            console.error('Error encriptando la contraseña:', error);
-            res.status(500).send('Error interno del servidor');
-            return;
+            console.error('Error interno del servidor:', error);
+            res.status(500).send('Error interno del servidor'); 
         }
-        
-        
-        
-        // Redirigir o enviar respuesta
-        res.redirect('/')
     },
+
 
     getListarClientes: async (req, res) => {
         try {
@@ -46,23 +45,29 @@ module.exports = {
         const { id } = req.params; // Obtener el ID del cliente desde los parámetros de la URL
         console.log('Datos recibidos:', req.body);
         console.log('ID recibido:', id);
-    
-        try { 
+
+        try {
             const query = `UPDATE clientes SET nombre = ?, cuit = ?, provincia = ?, ciudad = ?, domicilio = ?, telefono = ?, transporte = ?, seguro = ?, condicionDeEntrega = ? WHERE id = ?`;
-            console.log('Consulta SQL:', query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, id]); // Agrega este log
+            console.log('Consulta ejecutada con éxito:', query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, id]);
             conn.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, id], (err, results) => {
-                console.log( 'result',  results)
+                console.log('result', results);
+                if (results.affectedRows === 0) {
+                    return res.status(400).json({ message: 'No se realizaron cambios en el cliente' });
+                }
+
                 if (err) {
                     console.error('Error al actualizar cliente:', err);
-                    return res.status(500).send('Error al actualizar cliente');
+                    return res.status(500).json({ message: 'Error al actualizar cliente' });
                 }
                 console.log('Resultado de la query:', results);
-                res.json({message: 'Cliente actualizado correctamente'})
+                res.json({ message: 'Cliente actualizado correctamente' });
             });
         } catch (error) {
             console.error('Error interno del servidor:', error);
-            res.status(500).send('Error interno del servidor');
+            res.status(500).json({ message: 'Error interno del servidor' });
         }
     },
-    
+
+
+
 }
