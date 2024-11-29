@@ -65,6 +65,10 @@ module.exports = {
         } catch (error) {
             console.error('Error al listar productos:', error);
             res.status(500).json({ error: 'Error al listar productos' });
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
 
         // Función para formatear fecha a dd/mm/aaaa
@@ -114,6 +118,10 @@ module.exports = {
         } catch (error) {
             console.error('Error al actualizar producto:', error);
             res.status(500).json({ success: false, message: 'Error al actualizar producto.' });
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
     },        
 
@@ -136,6 +144,10 @@ module.exports = {
         } catch (error) {
             console.error('Error al eliminar producto:', error);
             res.status(500).json({ error: 'Error al eliminar el producto' });
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
     },
     

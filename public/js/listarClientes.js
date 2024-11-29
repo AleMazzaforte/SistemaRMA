@@ -1,4 +1,5 @@
 let activeIndex = -1;
+let matches = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     const formCliente = document.getElementById('formCliente');
@@ -12,75 +13,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const botonEliminar = document.getElementById('botonEliminar');
     const tituloCargarCliente = document.getElementById('tituloCargarCliente');
     let clientes = [];
-    
-    // Ocultar el formulario y mostrar el buscador al hacer clic en Editar
+
     editButton.addEventListener('click', () => {
         formCliente.style.display = 'none';
-        tituloCargarCliente.innerHTML = 'Actualizar cliente'
-        document.getElementById('id').style.display = 'block'
+        tituloCargarCliente.innerHTML = 'Actualizar cliente';
+        document.getElementById('id').style.display = 'block';
         setTimeout(() => {
-            clienteSearch.style.display = 'grid'; // Muestra el buscador después del retraso
+            clienteSearch.style.display = 'grid';
             labelClienteSearch.style.display = 'grid';
-            clienteSearch.focus();
+            clienteSearchInput.focus();
             fetchClientes();
-        }, 200); 
+        }, 200);
     });
 
-    // Obtener clientes de la base de datos
     async function fetchClientes() {
         try {
             const response = await fetch('/buscarCliente');
             clientes = await response.json();
-
         } catch (error) {
             console.error('Error al obtener clientes:', error);
         }
     }
-    
-    // Filtrar y mostrar coincidencias en tiempo real
+
     clienteSearchInput.addEventListener('input', () => {
         const searchTerm = clienteSearchInput.value.toLowerCase();
-        const matches = clientes.filter(cliente =>
+        matches = clientes.filter(cliente =>
             cliente.nombre.toLowerCase().includes(searchTerm) ||
             cliente.id.toString().includes(searchTerm)
         );
         displaySuggestions(matches);
+        activeIndex = -1; // Restablecer el índice activo
     });
-    
-    // Mostrar sugerencias de búsqueda
+
     function displaySuggestions(matches) {
         suggestionsContainer.innerHTML = '';
-        setTimeout(() => {
-            if (matches.length) {
-                suggestionsContainer.style.display = 'grid';
-            } else {
-                suggestionsContainer.style.display = 'none';
-            }
-        },  200);
-
-        matches.forEach(cliente => {
-            const suggestion = document.createElement('div');
-            suggestion.insertAdjacentHTML('beforeend', `${cliente.nombre} `);
-            suggestion.classList.add('suggestion-item');
-            suggestion.addEventListener('click', () => selectCliente(cliente));
-            suggestionsContainer.appendChild(suggestion);
-            
-        });
+        if (matches.length) {
+            suggestionsContainer.style.display = 'grid';
+            matches.forEach((cliente, index) => {
+                const suggestion = document.createElement('div');
+                suggestion.textContent = cliente.nombre;
+                suggestion.classList.add('suggestion-item');
+                suggestion.addEventListener('click', () => selectCliente(cliente));
+                suggestionsContainer.appendChild(suggestion);
+            });
+        } else {
+            suggestionsContainer.style.display = 'none';
+        }
     }
 
-    // Seleccionar cliente y cargar datos en el formulario
     function selectCliente(cliente) {
-        
         clienteSearch.style.display = 'none';
         suggestionsContainer.style.display = 'none';
-        editButton.style.display = 'none'
-        botonCargar.style.display = 'none'
+        editButton.style.display = 'none';
+        botonCargar.style.display = 'none';
         botonActualizar.style.display = 'inline-block';
         botonEliminar.style.display = 'inline-block';
         setTimeout(() => {
             formCliente.style.display = 'grid';
-            
-            // Cargar los datos del cliente en el formulario
+
             document.getElementById('id').value = cliente.id;
             document.getElementById('nombre').value = cliente.nombre;
             document.getElementById('cuit').value = cliente.cuit;
@@ -91,42 +81,40 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('transporte').value = cliente.transporte;
             document.getElementById('seguro').value = cliente.seguro;
             document.getElementById('condicionDeEntrega').value = cliente.condicionDeEntrega;
-            
-        }, 200); 
+        }, 200);
     }
 
-    // Manejar navegación por teclado
     clienteSearchInput.addEventListener('keydown', (event) => {
         const suggestions = Array.from(suggestionsContainer.querySelectorAll('.suggestion-item'));
         if (!suggestions.length) return;
 
         if (event.key === 'ArrowDown') {
-            activeIndex = (activeIndex + 1) % suggestions.length; // Siguiente ítem
+            activeIndex = (activeIndex + 1) % suggestions.length;
             updateActiveItem(suggestions);
         } else if (event.key === 'ArrowUp') {
-            activeIndex = (activeIndex - 1 + suggestions.length) % suggestions.length; // Ítem anterior
+            activeIndex = (activeIndex - 1 + suggestions.length) % suggestions.length;
             updateActiveItem(suggestions);
         } else if (event.key === 'Enter') {
             event.preventDefault();
             if (activeIndex >= 0) {
-                const cliente = clientes[activeIndex];
+                const cliente = matches[activeIndex];
                 selectCliente(cliente);
             }
         }
     });
 
-    // Actualizar el ítem activo
     function updateActiveItem(suggestions) {
         suggestions.forEach((item, index) => {
             if (index === activeIndex) {
-                item.classList.add('active'); // Clase para destacar
-                item.scrollIntoView({ block: 'nearest' }); // Mantener visible
+                item.classList.add('active');
+                item.scrollIntoView({ block: 'nearest' });
             } else {
                 item.classList.remove('active');
             }
         });
     }
 });
+
 
 
 /*  ******************************************

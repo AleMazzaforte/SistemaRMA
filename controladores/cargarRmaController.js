@@ -15,6 +15,10 @@ module.exports = {
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Error al listar los clientes' });
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
     },
 
@@ -44,6 +48,10 @@ module.exports = {
         } catch (error) {
             console.error('Error al agregar RMA:', error);
             res.status(500).json({ message: 'Error al agregar RMA' });
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
     },
     

@@ -28,6 +28,7 @@ router.post('/cargarUsuario', authController.isAuthenticated, usuarioController.
 router.post('/agregarCliente', authController.isAuthenticated, cliente.postAgregarClienteForm);
 //Ruta para actualizar clientes
 router.post('/actualizarCliente/:id', authController.isAuthenticated, cliente.postActualizarCliente);
+router.delete('/eliminarCliente/:id', authController.isAuthenticated, cliente.postEliminarCliente);
 
 //Ruta para listar clientes 
 router.get('/buscarCliente', authController.isAuthenticated, cliente.getListarClientes);

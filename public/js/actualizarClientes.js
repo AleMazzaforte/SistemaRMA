@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const botonActualizar = document.getElementById('botonActualizar');
-    
+    const botonEliminar = document.getElementById('botonEliminar'); // Agregado para eliminar
+
     botonActualizar.addEventListener('click', async (event) => {
         event.preventDefault();
 
@@ -51,6 +52,28 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error al actualizar cliente:', error);
             alert('Error al actualizar cliente');
+        }
+    });
+
+    botonEliminar.addEventListener('click', async (event) => {
+        event.preventDefault(); // Prevenir comportamiento por defecto del formulario
+        const id = document.getElementById('id').value;
+
+        try {
+            const response = await fetch(`/eliminarCliente/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert('Cliente eliminado correctamente');
+                // Aquí puedes añadir lógica para actualizar la interfaz después de eliminar el cliente
+                location.reload(); // Recarga la página para reflejar los cambios
+            } else {
+                alert('Error al eliminar el cliente');
+            }
+        } catch (error) {
+            console.error('Error al eliminar el cliente:', error);
+            alert('Error al eliminar el cliente');
         }
     });
 });

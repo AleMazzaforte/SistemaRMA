@@ -25,6 +25,10 @@ module.exports = {
         } catch (err) {
             console.error('Error al agregar el producto:', err);
             return res.status(500).send('Error al agregar el producto');
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
     },
 
@@ -37,6 +41,10 @@ module.exports = {
         } catch (error) {
             console.error('Error al listar productos:', error);
             res.status(500).send('Error al listar productos');
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
     },
 
@@ -51,6 +59,10 @@ module.exports = {
         } catch (err) {
             console.error('Error al actualizar el producto:', err);
             res.status(500).send('Error al actualizar el producto');
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
     },
     
@@ -65,6 +77,10 @@ module.exports = {
         } catch (err) {
             console.error('Error al eliminar el producto:', err);
             res.status(500).send('Error al eliminar el producto');
+        } finally {
+            if (conn) {
+                conn.release();
+            }
         }
     }
     
