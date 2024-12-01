@@ -1,0 +1,18 @@
+<%- include('partials/head') %>
+    <title>Cargar marcas</title>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <h1>Gestión de Marcas</h1>
+    <h2 id="tituloCargarCliente">Cargar marca</h2> 
+    <form action="/cargarMarcas" method="POST" id="formCliente"> 
+       
+
+        <!-- Marca -->
+        <label for="nombre">Marca:</label>
+        <input type="text" id="nombre" name="nombre" autocomplete="off" required>         
+    </form>
+
+    <script src="./js/listarMarcas.js"></script>
+</body>
+</html>

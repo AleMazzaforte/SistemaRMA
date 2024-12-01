@@ -1,3 +1,13 @@
+:root {
+    --primary-color: #3498db;       /* Azul principal */
+    --secondary-color: #2ecc71;     /* Verde secundario */
+    --background-color: #f5f5f5;    /* Fondo claro */
+    --bordesInput: #7c7878;          /* Texto oscuro */
+    --accent-color: #e74c3c;        /* Rojo de acento */
+}
+
+
+
 /* Centrando la tabla en la página */
 #formProductos {
     display: grid;
@@ -11,7 +21,7 @@
 #formProductos table {
     width: auto; /* Ajusta el ancho según tus necesidades */
     border-collapse: collapse;
-    border: 1px solid #ccc;
+    border: 1px solid var(--bordesInput);
     
     
     
@@ -23,7 +33,7 @@
     color: #333;
     text-align: left;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--bordesInput);
     font-weight: bold;
 }
 
@@ -32,7 +42,7 @@
 /* Estilos para las celdas de la tabla */
 #formProductos td,
 #formProductos th {
-    border: 1px solid #ddd;
+    border: 1px solid var(--bordesInput);
     width: auto
     
 }

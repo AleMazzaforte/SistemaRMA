@@ -10,7 +10,11 @@ module.exports = {
         let connection;
         try {
             connection = await conn.getConnection(); // Obtén la conexión del pool
-            await connection.query(sql, [req.body.nombre, req.body.direccionLocal, req.body.telefono]);
+            const nombre = req.body.nombre;
+            const direccionLocal = req.body.direccionLocal || null; // Convierte direcciónLocal vacía a null
+            const telefono = req.body.telefono ? req.body.telefono : null; // Convierte teléfono vacío a null
+
+            await connection.query(sql, [nombre, direccionLocal, telefono]);
             res.render('cargarTransporte');
         } catch (error) {
             console.error('Error al agregar transporte:', error);
@@ -47,7 +51,7 @@ module.exports = {
         let connection;
         try {
             connection = await conn.getConnection(); // Obtén la conexión del pool
-            await connection.query(sql, [nombre, direccionLocal, telefono, idTransporte]);  // Ejecuta la consulta con los datos
+            await connection.query(sql, [nombre, direccionLocal || null, telefono ? telefono : null, idTransporte]);  // Ejecuta la consulta con los datos
             res.redirect('/gestionarTransporte');  // Redirige después de la actualización
         } catch (error) {
             console.error('Error al actualizar el transporte:', error);

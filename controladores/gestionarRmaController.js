@@ -1,8 +1,6 @@
 const { conn } = require('../bd/bd');
 const { postActualizarCliente } = require('./clientesController');
 
-
-
 // Funciones para formatear fechas
 const formatFecha = (fecha) => {
     if (!fecha) return '';
@@ -19,7 +17,6 @@ const formatFechaInput = (fecha) => {
 module.exports = {
     getGestionarRma: async (req, res) => {
         try {
-            // Define la variable productos como un array vacío
             const productos = [];
             res.render('rma', { productos });
         } catch (error) {
@@ -28,10 +25,8 @@ module.exports = {
         }
     },
     
-
-    getListarProductosRma :  async (req, res) => {
+    getListarProductosRma: async (req, res) => {
         const idCliente = req.params.idCliente;
-         // Función para obtener productos por cliente
         const obtenerProductosPorCliente = async (idCliente) => {
             const query = `
                 SELECT idRma, modelo, cantidad, marca, solicita, opLote, vencimiento, 
@@ -42,74 +37,52 @@ module.exports = {
             return rows;
         };
 
+        let connection;
         try {
+            connection = await conn.getConnection();
             let productos = await obtenerProductosPorCliente(idCliente);
-              // Formateo de datos
             productos = productos.map((producto) => ({
-            modelo: producto.modelo || '',
-            cantidad: producto.cantidad || '',
-            marca: producto.marca || '',
-            solicita: formatFecha(producto.solicita) || '',
-            opLote: producto.opLote || '',
-            vencimiento: formatFecha(producto.vencimiento || ''),
-            seEntrega: formatFecha(producto.seEntrega) || '',
-            seRecibe: formatFecha(producto.seRecibe) || '',
-            observaciones: producto.observaciones || '',
-            nIngreso: producto.nIngreso || '',
-            nEgreso: producto.nEgreso || '',
-            idRma: producto.idRma || ""
-        }));
-
-
+                modelo: producto.modelo || '',
+                cantidad: producto.cantidad || '',
+                marca: producto.marca || '',
+                solicita: formatFecha(producto.solicita) || '',
+                opLote: producto.opLote || '',
+                vencimiento: formatFecha(producto.vencimiento || ''),
+                seEntrega: formatFecha(producto.seEntrega) || '',
+                seRecibe: formatFecha(producto.seRecibe) || '',
+                observaciones: producto.observaciones || '',
+                nIngreso: producto.nIngreso || '',
+                nEgreso: producto.nEgreso || '',
+                idRma: producto.idRma || ''
+            }));
             res.json(productos);
         } catch (error) {
             console.error('Error al listar productos:', error);
             res.status(500).json({ error: 'Error al listar productos' });
         } finally {
-            if (conn) {
-                conn.release();
+            if (connection) {
+                connection.release();
             }
         }
-
-        // Función para formatear fecha a dd/mm/aaaa
-        function formatFecha(fecha) {
-            if (!fecha) return ''; // Retorna vacío si es null o undefined
-            const date = new Date(fecha);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}/${month}/${year}`;
-        }
-
-        // Función para formatear fecha a aaaa-mm-dd para los inputs
-        function formatFechaInput(fecha) {
-            if (!fecha) return ''; // Retorna vacío si es null o undefined
-            const date = new Date(fecha);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }        
     },
 
-        // Actualizar los datos de un producto específico
     postActualizarCliente: async (req, res) => {
         const idRma = req.params.idRma;
         const { modelo, cantidad, marca, solicita, opLote, vencimiento, seEntrega, seRecibe, observaciones, nIngreso, nEgreso } = req.body;
-    
+        let connection;
         try {
+            connection = await conn.getConnection();
             const query = `
                 UPDATE r_m_a
                 SET modelo = ?, cantidad = ?, marca = ?, solicita = ?, opLote = ?, 
                     vencimiento = ?, seEntrega = ?, seRecibe = ?, observaciones = ?, 
                     nIngreso = ?, nEgreso = ?
                 WHERE idRma = ?`;
-    
-            const [result] = await conn.execute(query, [
+            const [result] = await connection.execute(query, [
                 modelo, cantidad, marca, solicita, opLote, vencimiento,
                 seEntrega, seRecibe, observaciones, nIngreso, nEgreso, idRma
             ]);
-    
+
             if (result.affectedRows > 0) {
                 res.status(200).json({ success: true, message: 'Producto actualizado correctamente.' });
             } else {
@@ -119,23 +92,24 @@ module.exports = {
             console.error('Error al actualizar producto:', error);
             res.status(500).json({ success: false, message: 'Error al actualizar producto.' });
         } finally {
-            if (conn) {
-                conn.release();
+            if (connection) {
+                connection.release();
             }
         }
-    },        
+    },
 
     postEliminarProducto: async (req, res) => {
         const { idRma } = req.params;
-        
         if (!idRma) {
             return res.status(400).json({ error: 'ID de producto no proporcionado' });
         }
-        
+
+        let connection;
         try {
+            connection = await conn.getConnection();
             const query = 'DELETE FROM r_m_a WHERE idRma = ?';
-            const [result] = await conn.execute(query, [idRma]);
-            
+            const [result] = await connection.execute(query, [idRma]);
+
             if (result.affectedRows > 0) {
                 res.status(200).json({ message: 'Producto eliminado exitosamente' });
             } else {
@@ -145,13 +119,9 @@ module.exports = {
             console.error('Error al eliminar producto:', error);
             res.status(500).json({ error: 'Error al eliminar el producto' });
         } finally {
-            if (conn) {
-                conn.release();
+            if (connection) {
+                connection.release();
             }
         }
     },
-    
-
-
-    
-}
+};

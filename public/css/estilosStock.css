@@ -1,0 +1,112 @@
+:root {
+    --primary-color: #3498db;       /* Azul principal */
+    --secondary-color: #2ecc71;     /* Verde secundario */
+    --background-color: #f5f5f5;    /* Fondo claro */
+    --bordesInput: #7c7878;         /* Bordes */
+    --accent-color: #e74c3c;        /* Rojo de acento */
+}
+
+/* Centrando la tabla en la página */
+#stockTableContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+/* Estilos para la tabla */
+#stockTable table {
+    width: auto; /* Ajusta el ancho según tus necesidades */
+    border-collapse: collapse;
+    border: 1px solid var(--bordesInput);
+}
+
+/* Estilos para las cabeceras de columna */
+#stockTable th {
+    background-color: var(--primary-color);
+    color: #fff;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid var(--bordesInput);
+    font-weight: bold;
+}
+
+/* Estilos para las celdas de la tabla */
+#stockTable td,
+#stockTable th {
+    border: 1px solid var(--bordesInput);
+    padding: 10px;
+    text-align: left;
+}
+
+/* Hover para filas de la tabla */
+#stockTable tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Estilo para las celdas de cantidad */
+#stockTable td:nth-child(2) {
+    text-align: right;
+}
+
+/* Estilos para el filtro */
+#filterContainer {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+#filterContainer label {
+    font-weight: bold;
+}
+
+#filterContainer input {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid var(--bordesInput);
+    border-radius: 4px;
+    margin-bottom: -10px;
+}
+
+#filterContainer .suggestions-container { 
+    position: absolute; top: 100%; /* Alinear justo debajo del input */ 
+    left: 0; 
+    right: 0; 
+    background-color: white; 
+    border: 1px solid var(--bordesInput); 
+    border-radius: 4px; 
+    max-height: 150px; 
+    overflow-y: auto; 
+    z-index: 1000; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-container {
+    margin-top: -10px;
+    position: absolute;
+    background-color: white;
+    border: 1px solid var(--bordesInput);
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+}
+
+.suggestion-item {
+    width: 200px;
+    padding: 10px;
+    cursor: pointer;
+    display: block;
+    background-color: white;
+    margin: 0;
+}
+
+.suggestion-item:hover,
+.suggestion-item.highlighted {
+    background-color: #e9e9e9;
+}

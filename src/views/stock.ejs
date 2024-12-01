@@ -1,0 +1,23 @@
+<%- include('partials/head') %>
+    <title>Stock</title>
+    <link rel="stylesheet" href="./css/estilosStock.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <h1>Gestión de Stock</h1>
+    <h2>Lista de Productos</h2>
+
+
+
+    <div id="filterContainer">
+         <label for="filterInput">Filtrar por marca:</label> 
+         <input type="text" id="filterInput" name="marca" autocomplete="off">
+         <div></div>
+         <div id="suggestionsContainer2" style="display: none;"></div> 
+    </div> 
+    <div id="stockTableContainer"> 
+        <div id="stockTable"> </div>
+    
+    <script src="./js/stockRma.js"></script>
+</body>
+</html>

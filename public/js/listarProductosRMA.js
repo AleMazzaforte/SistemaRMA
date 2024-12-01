@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 suggestionsContainer2.scrollTop += (suggestionRect.bottom - containerRect.bottom);
             }
         }
-    }
+    } 
 
     // Controla las teclas de flecha para navegar en las sugerencias
     function handleArrowKeys1(event) {
@@ -100,7 +100,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Escucha el input para SKU y muestra sugerencias
     modelo.addEventListener('input', () => {
         const searchTerm = modelo.value.toLowerCase();
-        console.log('sku', productos)
         const matches = productos.filter(producto => producto.sku.toLowerCase().includes(searchTerm));
         displaySuggestions(matches);
     });

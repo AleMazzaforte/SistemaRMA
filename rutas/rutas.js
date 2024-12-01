@@ -10,6 +10,8 @@ const cargarRma = require('../controladores/cargarRmaController.js');
 const gestionarRma = require('../controladores/gestionarRmaController.js');
 const transportesController = require('../controladores/transportesController.js')
 const imprimirEtiqueta = require('../controladores/etiquetasController.js');
+const stockController = require('../controladores/stockController.js')
+const marcas = require('../controladores/marcasController.js')
 
 router.get('/', authController.isAuthenticated, mainController.getIndex)
 
@@ -68,5 +70,15 @@ router.post('/eliminarTransporte/:idTransporte', authController.isAuthenticated,
 
 //Rutas para imprimir etiquetas
 router.get('/imprimirEtiqueta', authController.isAuthenticated, imprimirEtiqueta.getImprimirEtiqueta);
+
+//Rutas para marcas
+router.get('/cargarMarcas', authController.isAuthenticated, marcas.getCargarMarcas);
+router.post('/cargarMarcas', authController.isAuthenticated, marcas.postCargarMarcas);
+router.get('/listarMarcas', authController.isAuthenticated, marcas.listarMarcas);
+
+
+//Rutas para consultar stock
+router.get('/stockEjs', authController.isAuthenticated, stockController.getStockEjs)
+router.get('/stock', authController.isAuthenticated, stockController.getStock);
 
 module.exports = router;

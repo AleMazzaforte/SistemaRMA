@@ -1,24 +1,125 @@
-const direccionActual = window.location.pathname;
-if (direccionActual === '/gestionarRma') {
-    const h1 = document.getElementById('tituloCargar');
-    h1.innerHTML = '';
-    h1.insertAdjacentHTML('beforeend', 'Gestionar Rma');
+ const direccionActual = window.location.pathname;
+ if (direccionActual === '/gestionarRma') {
+     const h1 = document.getElementById('tituloCargar');
+     h1.innerHTML = '';
+     h1.insertAdjacentHTML('beforeend', 'Gestionar Rma');
 }
 
-async function cargarProductos(idCliente) {
-    try {  
+document.addEventListener('DOMContentLoaded', () => {
+    const clienteSearch = document.getElementById('clienteSearch');
+    const suggestionsContainer = document.getElementById('suggestionsContainer1');
+    const productosContainer = document.getElementById('productosContainer');
+    const productosTableBody = document.getElementById('productosTableBody');
+    const botonCargar = document.getElementById('botonCargar');
+
+    botonCargar.disabled = true; // Inicializar el botón como deshabilitado
+
+    let highlightedIndex = -1; // Índice del elemento resaltado
+    let clientes = []; // Almacena la lista de clientes
+    let filteredClientes = []; // Almacena la lista filtrada de clientes
+
+    const rutaActual = window.location.pathname;
+
+    clienteSearch.addEventListener('input', async () => {
+        const query = clienteSearch.value.trim();
+        
+        // Limpiar la tabla de productos cuando se empieza a buscar un cliente nuevo
+        limpiarTablaProductos();
+
+        try {
+            const response = await fetch(`/listarClientesRma`);
+            clientes = await response.json(); // Guarda la lista de clientes
+            suggestionsContainer.innerHTML = '';
+            suggestionsContainer.style.display = 'block';
+
+            filteredClientes = clientes.filter(cliente => 
+                cliente.nombre && typeof cliente.nombre === 'string' && cliente.nombre.toLowerCase().includes(query.toLowerCase())
+            );
+
+            filteredClientes.forEach(cliente => {
+                const suggestion = document.createElement('div');
+                suggestion.classList.add('suggestion-item');
+                suggestion.textContent = cliente.nombre;
+
+                suggestion.addEventListener('click', () => {
+                    selectCliente(cliente); // Llama a la función para seleccionar el cliente
+                });
+
+                suggestionsContainer.appendChild(suggestion);
+            });
+            
+        } catch (error) {
+            console.error('Error fetching clientes:', error);
+        }
+    });
+
+    // Manejar la navegación con flechas y selección
+    clienteSearch.addEventListener('keydown', (e) => {
+        const suggestionItems = document.querySelectorAll('.suggestion-item');
+        if (e.key === 'ArrowDown') {
+            highlightedIndex = (highlightedIndex + 1) % suggestionItems.length;
+            updateHighlight(suggestionItems);
+            e.preventDefault(); // Evitar el desplazamiento de la página
+        } else if (e.key === 'ArrowUp') {
+            highlightedIndex = (highlightedIndex - 1 + suggestionItems.length) % suggestionItems.length;
+            updateHighlight(suggestionItems);
+            e.preventDefault(); // Evitar el desplazamiento de la página
+        } else if (e.key === 'Enter') {
+            if (highlightedIndex >= 0 && suggestionItems[highlightedIndex]) {
+                selectCliente(filteredClientes[highlightedIndex]); // Seleccionar el cliente resaltado de la lista filtrada
+            }
+        }
+    });
+
+    const updateHighlight = (items) => {
+        items.forEach((item, index) => {
+            if (index === highlightedIndex) {
+                item.classList.add('highlighted'); // Agregar clase para resaltar
+                item.scrollIntoView({ block: 'nearest' }); // Desplazar para mostrar el resaltado
+            } else {
+                item.classList.remove('highlighted'); // Remover resaltado
+            }
+        });
+    };
+
+    const selectCliente = (cliente) => {
+        clienteSearch.value = cliente.nombre; // Poner el nombre en el input
+        document.getElementById('idCliente').value = cliente.id;  // Guarda el ID del cliente seleccionado en el campo oculto
+        suggestionsContainer.style.display = 'none';
+
+        if (rutaActual === '/agregarRma') {
+            document.querySelectorAll('.campoOculto').forEach(campo => {
+                campo.classList.remove('campoOculto'); // Eliminar la clase que oculta los campos
+            });
+        }
+
+        if (rutaActual === '/gestionarRma') {
+            cargarProductos(cliente.id, cliente.nombre); // Pasar el nombre del cliente también
+        }
+    };
+
+    document.addEventListener('click', (e) => {
+        if (!suggestionsContainer.contains(e.target) && e.target !== clienteSearch) {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
+
+    function limpiarTablaProductos() {
+        productosTableBody.innerHTML = ''; // Limpia el contenido de la tabla
+        document.getElementById('formProductos').style.display = 'none'; // Oculta el formulario
+    }
+});
+
+async function cargarProductos(idCliente, nombreCliente) {
+    try {
         const response = await fetch(`/listarProductosRma/${idCliente}`);
         const productos = await response.json();
-        
+
         const productosTableBody = document.getElementById('productosTableBody');
         productosTableBody.innerHTML = ''; // Limpiar tabla antes de llenarla
 
-        // Verifica si hay productos asociados
         if (productos.length > 0) {
-            // Mostrar el formulario
             document.getElementById('formProductos').style.display = 'grid';
-
-            // Llenar la tabla con los datos de los productos
             productos.forEach((producto) => {
                 const formatDate = date => {
                     const [day, month, year] = date.split('/');
@@ -40,87 +141,77 @@ async function cargarProductos(idCliente) {
                     <td><input type="number" value="${producto.nIngreso}" name="nIngreso" /></td>
                     <td><input type="number" value="${producto.nEgreso}" name="nEgreso" /></td>
                     <td><button type="button" class="botonActualizar" data-id="${producto.idRma}">Actualizar</button></td>
-                    <td><button type="button" onclick="eliminarProducto(${producto.idRma})" class= 'botonEliminar'>Eliminar</button></td>
+                    <td><button type="button" onclick="eliminarProducto(${producto.idRma})" class="botonEliminar">Eliminar</button></td>
                 `;
+
                 productosTableBody.appendChild(row);
 
-                // Al cargar el producto, guarda los datos originales de la fila
                 const inputs = row.querySelectorAll('input');
-                const rowId = row.dataset.id; // El ID del producto
+                const rowId = row.dataset.id;
                 originalData[rowId] = Array.from(inputs).reduce((acc, input) => {
                     acc[input.name] = input.value.trim() === '' ? null : input.value;
                     return acc;
                 }, {});
-
             });
 
-
-
-
-        } else { 
-            alert('El cliente seleccionado no tiene productos asociados.');
-            // Ocultar el formulario si no hay productos
+        } else {
+            if (nombreCliente) {
+                alert(`El cliente ${nombreCliente} no tiene productos asociados.`);
+            } else {
+                console.error('Error: nombreCliente no está definido.');
+            }
             document.getElementById('formProductos').style.display = 'none';
-            clienteSearch.value = '';
         }
     } catch (error) {
         console.error('Error al cargar productos:', error);
     }
 }
 
-//escuchar los cambios y actualizar
-let originalData = {}
+// Escuchar los cambios y actualizar
+let originalData = {};
+
 document.addEventListener('DOMContentLoaded', () => {
     const productosTableBody = document.getElementById('productosTableBody');
 
-     // Objeto global para almacenar los datos originales de cada fila
-      
+    // Guardar los datos originales de todas las filas
+    const filas = productosTableBody.querySelectorAll('tr');
+    filas.forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const rowId = row.dataset.id;
+        originalData[rowId] = Array.from(inputs).reduce((acc, input) => {
+            acc[input.name] = input.value.trim() === '' ? null : input.value;
+            return acc;
+        }, {});
+    });
 
-     // Al cargar la página, guardar los datos originales de todas las filas
-     const filas = productosTableBody.querySelectorAll('tr');
-     filas.forEach(row => {
-         const inputs = row.querySelectorAll('input');
-         const rowId = row.dataset.id; // Suponiendo que cada fila tiene un atributo data-id con el ID del producto
- 
-         
-     });
-     
     // Escucha eventos de clic en los botones de actualizar
     productosTableBody.addEventListener('click', (event) => {
         if (event.target.classList.contains('botonActualizar')) {
             const button = event.target;
-            const row = button.closest('tr'); // Obtener la fila donde está el botón
+            const row = button.closest('tr');
             if (!row) return;
 
-            const idRma = button.dataset.id; // Obtener el ID del producto
-            const inputs = row.querySelectorAll('input'); // Obtener los inputs de la fila
+            const idRma = button.dataset.id;
+            const inputs = row.querySelectorAll('input');
 
-            
-
-            // Construir un objeto con los datos de la fila
             const datosFila = Array.from(inputs).reduce((acc, input) => {
                 acc[input.name] = input.value.trim() === '' ? null : input.value;
                 return acc;
             }, {});
 
-            // Llamar a la función actualizarProducto
             actualizarProducto(idRma, datosFila);
         }
     });
 });
 
-
 // Función para actualizar producto en el servidor
 async function actualizarProducto(idRma, datosFila) {
-    
-     // Obtener los datos originales de la fila
-     const originalRowData = originalData[idRma];
-     // Comparar los datos actuales con los originales
-     const isChanged = Object.keys(datosFila).some(key => datosFila[key] !== originalRowData[key]);
- 
-     if (!isChanged) {
-         return; // Si no hay cambios, no hacer nada
-     }
+    const originalRowData = originalData[idRma];
+    const isChanged = Object.keys(datosFila).some(key => datosFila[key] !== originalRowData[key]);
+
+    if (!isChanged) {
+        return;
+    }
 
     try {
         const response = await fetch(`/actualizarProductoRma/${idRma}`, {
@@ -141,7 +232,6 @@ async function actualizarProducto(idRma, datosFila) {
 }
 
 
-
 // *************************************************************
 //               Función para eliminar registros
 // *************************************************************
@@ -149,39 +239,39 @@ async function actualizarProducto(idRma, datosFila) {
 async function eliminarProducto(idRma) {
     
     
-    const confirmacion = confirm("¿Estás seguro de que deseas eliminar este valor?");
+     const confirmacion = confirm("¿Estás seguro de que deseas eliminar este valor?");
     
-    if (!confirmacion) {
-        console.log("La acción de eliminación fue cancelada.");
-        return; // Detén la ejecución si el usuario cancela
-    }
+     if (!confirmacion) {
+         console.log("La acción de eliminación fue cancelada.");
+         return; // Detén la ejecución si el usuario cancela
+     }
    
 
-    try {
+     try {
         
-        const response = await fetch(`/eliminarProductoRma/${idRma}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-        });
+         const response = await fetch(`/eliminarProductoRma/${idRma}`, {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+         });
 
         
-        if (!response.ok) throw new Error('Error al eliminar el producto');
+         if (!response.ok) throw new Error('Error al eliminar el producto');
         
-        // Selecciona el elemento correctamente, usando data-idRma
-        const rowElement = document.querySelector(`tr[data-id="${idRma}"]`);
-        if (rowElement) {
+         // Selecciona el elemento correctamente, usando data-idRma
+         const rowElement = document.querySelector(`tr[data-id="${idRma}"]`);
+         if (rowElement) {
             
-            rowElement.remove();
-            alert('Producto eliminado exitosamente.');
-        } else {
-            console.warn(`No se encontró ningún elemento en la tabla con ID: ${idRma}`);
-        }
+             rowElement.remove();
+             alert('Producto eliminado exitosamente.');
+         } else {
+             console.warn(`No se encontró ningún elemento en la tabla con ID: ${idRma}`);
+         }
         
-    } catch (error) {
-        console.error('Error al eliminar el producto:', error);
-        alert('Hubo un error al eliminar el producto.');
-    }
-}
+     } catch (error) {
+         console.error('Error al eliminar el producto:', error);
+         alert('Hubo un error al eliminar el producto.');
+     }
+ }
 
 
 

@@ -1,42 +1,37 @@
 const rutaActual = window.location.pathname;
 
 // Ocultar y mostrar elementos
- if (rutaActual === '/gestionarTransporte') {
-     document.getElementById('h1').setAttribute('style', 'display: none !important');
-     document.getElementById('botonCargar').disabled = true;
-     document.getElementById('botonCargar').setAttribute('style', 'display: none !important');
+if (rutaActual === '/gestionarTransporte') {
+    document.getElementById('h1').setAttribute('style', 'display: none !important');
+    document.getElementById('botonCargar').disabled = true;
+    document.getElementById('botonCargar').setAttribute('style', 'display: none !important');
     
-     let ocultarElementos = document.querySelectorAll('.cargarTransporte');
-     let mostrarElementos = document.querySelector('.gestionarTransporte');
-     let transporte = ''
-     ocultarElementos.forEach(elemento => {
-         elemento.style.display = 'none';
-     });
+    let ocultarElementos = document.querySelectorAll('.cargarTransporte');
+    let mostrarElementos = document.querySelector('.gestionarTransporte');
+    let transporte = ''
+    ocultarElementos.forEach(elemento => {
+        elemento.style.display = 'none';
+    });
     
-    
-     mostrarElementos.style.display = 'block';
-     
+    mostrarElementos.style.display = 'block';
+}
 
-    
- }
 document.getElementById('botonActualizar').style.display = 'none';
-     document.getElementById('botonEliminar').style.display = 'none';
+document.getElementById('botonEliminar').style.display = 'none';
 
 document.addEventListener('DOMContentLoaded', async () => {
     if (rutaActual === '/agregarTransporte') {
-        return
+        return;
     }
     const listarTransporte = await fetch('/listarTransportes');
     const listaTransportes = await listarTransporte.json();
     
-
     const inputNombre = document.getElementById('nombre');
     const inputDireccion = document.getElementById('direccionLocal');
     const inputTelefono = document.getElementById('telefono');
     const inputIdTransporte = document.getElementById('idTransporte');
     const suggestionsContainer = document.querySelector('#suggestionsContainer1');
     
-
     let selectedIndex = -1;
 
     inputNombre.addEventListener('input', () => {
@@ -58,10 +53,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 suggestionElement.setAttribute('data-id', transporte.idTransporte);
                 suggestionElement.setAttribute('data-index', index);
-                suggestionElement.setAttribute('data-direccion', transporte.direccionLocal);
-                suggestionElement.setAttribute('data-telefono', transporte.telefono);
+                suggestionElement.setAttribute('data-direccion', transporte.direccionLocal ?? '');
+                suggestionElement.setAttribute('data-telefono', transporte.telefono ?? '');
                 
-
                 suggestionsContainer.appendChild(suggestionElement);
             });
         } else {
@@ -82,23 +76,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             inputTelefono.value = selectedTelefono;
             inputIdTransporte.value = selectedId;
 
-              // Cambiar el action del formulario para que apunte a la ruta de actualización
-              const formTransporte = document.getElementById('formTransporte');
-              const botonActualizar = document.getElementById('botonActualizar');
-              const botonEliminar = document.getElementById('botonEliminar');
+            // Cambiar el action del formulario para que apunte a la ruta de actualización
+            const formTransporte = document.getElementById('formTransporte');
+            const botonActualizar = document.getElementById('botonActualizar');
+            const botonEliminar = document.getElementById('botonEliminar');
 
+            // Cambia el `action` del formulario según el botón presionado
+            botonActualizar.addEventListener('click', (event) => {
+                formTransporte.setAttribute('action', `/actualizarTransporte/${selectedId}`);
+                formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
+            });
 
-              // Cambia el `action` del formulario según el botón presionado
-              botonActualizar.addEventListener('click', (event) => {
-                  formTransporte.setAttribute('action', `/actualizarTransporte/${selectedId}`);
-                  formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
-              });
-
-              botonEliminar.addEventListener('click', (event) => {
-                  formTransporte.setAttribute('action', `/eliminarTransporte/${selectedId}`);
-                  formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
-              });
-  
+            botonEliminar.addEventListener('click', (event) => {
+                formTransporte.setAttribute('action', `/eliminarTransporte/${selectedId}`);
+                formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
+            });
 
             document.querySelectorAll('.cargarTransporte').forEach(e => e.style.display = 'grid');
             
@@ -108,16 +100,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Código para navegar por las sugerencias con flechas y seleccionar con Enter
     inputNombre.addEventListener('keydown', (event) => {
-        
-        
         const suggestions = document.querySelectorAll('.suggestion');
-        
         
         if (event.key === 'ArrowDown') {
             if (selectedIndex < suggestions.length - 1) {
                 selectedIndex++;
                 highlightSuggestion(suggestions[selectedIndex]);
-                
             }
         } else if (event.key === 'ArrowUp') {
             if (selectedIndex > 0) {
@@ -125,7 +113,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 highlightSuggestion(suggestions[selectedIndex]);
             }
         } else if (event.key === 'Enter') {
-            
             // Verificar si hay una sugerencia seleccionada
             if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
                 const selectedSuggestion = suggestions[selectedIndex]; // Utilizar la sugerencia seleccionada
@@ -140,11 +127,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 inputTelefono.value = selectedTelefono;
                 inputIdTransporte.value = selectedId;
                 
-                  // Cambiar el action del formulario para que apunte a la ruta de actualización
+                // Cambiar el action del formulario para que apunte a la ruta de actualización
                 const formTransporte = document.getElementById('formTransporte');
                 const botonActualizar = document.getElementById('botonActualizar');
                 const botonEliminar = document.getElementById('botonEliminar');
-
 
                 // Cambia el `action` del formulario según el botón presionado
                 botonActualizar.addEventListener('click', (event) => {
@@ -157,15 +143,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     formTransporte.submit();  // Envía el formulario si deseas que se envíe inmediatamente
                 });
 
-                document.querySelectorAll('.cargarTransporte').forEach(e => e.style.display = 'grid');            
-                suggestionsContainer.style.display = 'none';           
-                     
+                document.querySelectorAll('.cargarTransporte').forEach(e => e.style.display = 'grid');
+                suggestionsContainer.style.display = 'none';
             }
         }
     });
+
     if (rutaActual != '/agregarTransporte') {
-        document.getElementById('botonCargar').style.display = 'none'
-        document.getElementById('botonCargar').disabled = true
+        document.getElementById('botonCargar').style.display = 'none';
+        document.getElementById('botonCargar').disabled = true;
     }
 
     function highlightSuggestion(suggestion) {
@@ -173,5 +159,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         suggestion.classList.add('active');
     }
 });
-
-

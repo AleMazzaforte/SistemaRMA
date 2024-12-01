@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const clienteSearch = document.getElementById('clienteSearch');
     const suggestionsContainer = document.getElementById('suggestionsContainer1');
@@ -7,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     botonCargar.disabled = true; // Inicializar el botón como deshabilitado
 
-
     let highlightedIndex = -1; // Índice del elemento resaltado
     let clientes = []; // Almacena la lista de clientes
+    let filteredClientes = []; // Almacena la lista filtrada de clientes
 
     const rutaActual = window.location.pathname;
 
@@ -22,19 +20,20 @@ document.addEventListener('DOMContentLoaded', () => {
             suggestionsContainer.innerHTML = '';
             suggestionsContainer.style.display = 'block';
 
-            clientes.forEach(cliente => {
-                // Verifica que cliente.nombre exista y sea una cadena
-                if (cliente.nombre && typeof cliente.nombre === 'string' && cliente.nombre.toLowerCase().includes(query.toLowerCase())) {
-                    const suggestion = document.createElement('div');
-                    suggestion.classList.add('suggestion-item');
-                    suggestion.textContent = cliente.nombre;
+            filteredClientes = clientes.filter(cliente => 
+                cliente.nombre && typeof cliente.nombre === 'string' && cliente.nombre.toLowerCase().includes(query.toLowerCase())
+            );
 
-                    suggestion.addEventListener('click', () => {
-                        selectCliente(cliente); // Llama a la función para seleccionar el cliente
-                    });
+            filteredClientes.forEach(cliente => {
+                const suggestion = document.createElement('div');
+                suggestion.classList.add('suggestion-item');
+                suggestion.textContent = cliente.nombre;
 
-                    suggestionsContainer.appendChild(suggestion);
-                }
+                suggestion.addEventListener('click', () => {
+                    selectCliente(cliente); // Llama a la función para seleccionar el cliente
+                });
+
+                suggestionsContainer.appendChild(suggestion);
             });
             
         } catch (error) {
@@ -55,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault(); // Evitar el desplazamiento de la página
         } else if (e.key === 'Enter') {
             if (highlightedIndex >= 0 && suggestionItems[highlightedIndex]) {
-                selectCliente(clientes[highlightedIndex]); // Seleccionar el cliente resaltado
+                selectCliente(filteredClientes[highlightedIndex]); // Seleccionar el cliente resaltado de la lista filtrada
             }
         }
     });
@@ -84,29 +83,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Deshabilitar la selección por flechas
         clienteSearch.removeEventListener('keydown', clienteSearch); // Elimina el listener de keydown
-       if (rutaActual == '/gestionarRma') {
+        if (rutaActual == '/gestionarRma') {
             cargarProductos(cliente.id);
-       }
-
+        }
     };
 
     document.addEventListener('click', (e) => {
         if (!suggestionsContainer.contains(e.target) && e.target !== clienteSearch) {
             suggestionsContainer.style.display = 'none';
-            
         }
     });
 });
 
-// ******************************************************************
-// **********Evento click para enviar los datos a la base de datos***
-// ******************************************************************
-
-
-
-
 // Asociar la función de envío al botón directamente
-// Obtener el formulario al principio
 const formRma = document.getElementById('formRma');
 
 async function enviarFormulario(event) {
@@ -172,4 +161,3 @@ async function enviarFormulario(event) {
         alert('Ocurrió un error al cargar RMA. Intenta de nuevo más tarde.');
     }
 }
-
