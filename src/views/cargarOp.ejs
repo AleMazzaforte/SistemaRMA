@@ -6,10 +6,16 @@
     <%- include('partials/header') %> 
 
     <h1>Cargar OP</h1>
-    <form action="cargarOp" id="formOp" method="POST">
-
+    <form id="formOp" method="POST">
         <label for="op">OP:</label>
         <input type="text" name="op" required id="op" autocomplete="off"><br>
+
+        <label for="fechaIngreso">Fecha de ingreso:</label>
+        <input type="date" name="fechaIngreso" id="fechaIngreso"><br>
+
+        <div id="sugerenciasProductos">
+            <!-- Aquí se mostrarán los productos y cantidades añadidos -->
+        </div>
 
         <label for="producto">Producto:</label>
         <input type="text" name="producto" id="producto" autocomplete="off">
@@ -18,11 +24,8 @@
         <label for="cantidad">Cantidad:</label>
         <input type="number" name="cantidad" id="cantidad"><br>
 
-        <label for="fechaIngreso">Fecha de ingreso:</label>
-        <input type="date" name="fechaIngreso" id="fechaIngreso"><br>
-
-        <button type="submit">Cargar</button>
-
+        <button type="button" id="añadirProducto">Añadir Producto</button>
+        <button type="submit">Enviar OP Completa</button>
     </form>
     <script src="./js/listarProductosOp.js"></script>
 </body>

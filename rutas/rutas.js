@@ -91,4 +91,9 @@ router.post('/actualizarOp', authController.isAuthenticated, cargarOp.postActual
 router.get('/buscarOps', authController.isAuthenticated, cargarOp.getListarOps); 
 router.get('/detalleOp/:opId', authController.isAuthenticated, cargarOp.getDetalleOp);
 
+//Ruta temporal
+router.get('/cargardatosviejos', authController.isAuthenticated, cargarOp.getCargarDatosViejos);
+
+router.post('/guardarProductos', cargarOp.guardarProductos);
+
 module.exports = router;

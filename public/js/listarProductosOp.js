@@ -1,14 +1,21 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const productoInput = document.getElementById('producto'); // Cambiar el ID aquí
+    const formOp = document.getElementById('formOp');
+    const opInput = document.getElementById('op');
+    const fechaIngresoInput = document.getElementById('fechaIngreso');
+    const productoInput = document.getElementById('producto');
+    const cantidadInput = document.getElementById('cantidad');
+    const añadirProductoBtn = document.getElementById('añadirProducto');
+    const sugerenciasProductosDiv = document.getElementById('sugerenciasProductos');
     const suggestionsContainer = document.querySelector('#suggestionsContainerProducto'); 
     let productos = [];
+    let productosList = [];
     let activeSuggestionIndex = -1;
 
     // Obtén la lista de productos una vez
     async function fetchProductos() {
         try {
             const response = await fetch('/buscarProductos');
-            productos = await response.json();
+            productosList = await response.json();
         } catch (error) {
             console.error('Error al obtener productos:', error);
         }
@@ -24,12 +31,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             suggestionsContainer.style.left = `${inputRect.left + window.scrollX}px`;
             suggestionsContainer.style.width = `${inputRect.width}px`;
 
-            // Crear cada sugerencia como un elemento div
             matches.forEach((producto, index) => {
                 const suggestion = document.createElement('div');
-                suggestion.textContent = producto.sku; // Mostrar la descripción del producto
+                suggestion.textContent = producto.sku; // Mostrar el SKU del producto
                 suggestion.classList.add('suggestion-item');
-                suggestion.addEventListener('click', () => selectProducto(producto.descripcion));
+                suggestion.addEventListener('click', () => selectProducto(producto.sku));
                 suggestion.addEventListener('mouseenter', () => setActiveSuggestion(index)); // Resalta la sugerencia al pasar el ratón
                 suggestionsContainer.appendChild(suggestion);
             });
@@ -64,7 +70,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const containerRect = suggestionsContainer.getBoundingClientRect();
             const suggestionRect = activeSuggestion.getBoundingClientRect();
 
-            // Verifica si la sugerencia está fuera del rango visible
             if (suggestionRect.top < containerRect.top) {
                 suggestionsContainer.scrollTop -= (containerRect.top - suggestionRect.top);
             } else if (suggestionRect.bottom > containerRect.bottom) {
@@ -95,17 +100,87 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Escucha el input para SKU y muestra sugerencias
     productoInput.addEventListener('input', () => {
         const searchTerm = productoInput.value.toLowerCase();
-        const matches = productos.filter(producto => producto.descripcion.toLowerCase().includes(searchTerm));
+        const matches = productosList.filter(producto => producto.sku.toLowerCase().includes(searchTerm));
         displaySuggestions(matches);
+    });
+
+    // Añadir producto a la lista
+    añadirProductoBtn.addEventListener('click', () => {
+        const producto = productoInput.value.trim();
+        const cantidad = cantidadInput.value.trim();
+
+        if (producto && cantidad) {
+            const productoObj = { producto, cantidad };
+            productos.push(productoObj);
+            actualizarListaProductos();
+            productoInput.value = '';
+            cantidadInput.value = '';
+            productoInput.focus(); // Mover el foco al input de producto
+        } else {
+            alert('Por favor, completa ambos campos antes de añadir.');
+        }
+    });
+
+    // Actualizar la visualización de la lista de productos
+    function actualizarListaProductos() {
+        sugerenciasProductosDiv.innerHTML = '';
+        productos.forEach((producto, index) => {
+            const productoDiv = document.createElement('div');
+            productoDiv.classList.add('producto-item');
+            productoDiv.innerHTML = `
+                <span>Producto: ${producto.producto} - Cantidad: ${producto.cantidad}</span>
+                <button type="button" onclick="eliminarProducto(${index})">Eliminar</button>
+            `;
+            sugerenciasProductosDiv.appendChild(productoDiv);
+        });
+    }
+
+    // Eliminar producto de la lista
+    window.eliminarProducto = (index) => {
+        productos.splice(index, 1);
+        actualizarListaProductos();
+    };
+
+    // Enviar formulario con los productos añadidos
+    formOp.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (productos.length === 0) {
+            alert('Por favor, añade al menos un producto antes de enviar.');
+            return;
+        }
+
+        const op = opInput.value;
+        const fechaIngreso = fechaIngresoInput.value;
+        
+        try {
+            const response = await fetch('/cargarOp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ op, fechaIngreso, productos })
+            });
+
+            if (response.ok) {
+                alert('OP cargada exitosamente');
+                formOp.reset();
+                productos = [];
+                actualizarListaProductos();
+            } else {
+                alert('Error al cargar la OP');
+            }
+        } catch (error) {
+            console.error('Error al cargar la OP:', error);
+            alert('Error al cargar la OP');
+        }
     });
 
     // Carga los productos al cargar la página
     await fetchProductos();
 
-    // Escuchar teclas de navegación solo si el contenedor de sugerencias está activo
-    document.addEventListener('keydown', (event) => {
+    // Escuchar teclas de navegación solo si el contenedor de sugerencias está activo 
+    document.addEventListener('keydown', (event) => { 
         if (suggestionsContainer.style.display === 'block') {
-            handleArrowKeys(event);
-        }
+             handleArrowKeys(event); 
+            } 
+        }); 
     });
-});
