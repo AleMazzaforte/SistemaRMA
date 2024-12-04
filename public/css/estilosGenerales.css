@@ -29,7 +29,7 @@ h1, h2 {
     color: var(--primary-color);
 }
  
-#formCliente {
+#formCliente, #formOp  {
     display: grid;
     grid-template-columns: 150px 1fr;  /* Primera columna para labels, segunda para inputs */
     row-gap: -5px;  /* Espaciado entre filas y columnas */

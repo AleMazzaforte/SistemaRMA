@@ -1,0 +1,27 @@
+<%- include('partials/head') %> 
+    <link rel="stylesheet" href="./css/estilosActualizarOp.css">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('partials/header') %> 
+
+    <h1>papa</h1>
+
+    <form id="formOp" action="/actualizarOp" method="POST"> 
+
+        <label for="buscarOp" class="buscarOp">Buscar OP:</label> 
+        <input type="text" id="buscarOp" class="buscarOp">
+        <div></div>
+
+        <div id="suggestionsContainerOp" class="suggestions-container"></div> <!-- Contenedor para las sugerencias de OP --> 
+        
+        <label for="op" style="display: none;">OP:</label> 
+        <input type="text" name="op" id="op" readonly style="display: none;"> 
+        <br>
+        <div id="tablaProductos"> <!-- La tabla de productos se generará dinámicamente aquí --> </div> 
+        
+        <button type="button" id="botonActualizar">Actualizar</button> 
+    </form>
+    <script src="./js/actualizarOp.js"></script>
+</body>
+</html>

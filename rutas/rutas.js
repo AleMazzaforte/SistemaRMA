@@ -12,6 +12,7 @@ const transportesController = require('../controladores/transportesController.js
 const imprimirEtiqueta = require('../controladores/etiquetasController.js');
 const stockController = require('../controladores/stockController.js')
 const marcas = require('../controladores/marcasController.js')
+const cargarOp = require('../controladores/OpController.js')
 
 router.get('/', authController.isAuthenticated, mainController.getIndex)
 
@@ -80,5 +81,14 @@ router.get('/listarMarcas', authController.isAuthenticated, marcas.listarMarcas)
 //Rutas para consultar stock
 router.get('/stockEjs', authController.isAuthenticated, stockController.getStockEjs)
 router.get('/stock', authController.isAuthenticated, stockController.getStock);
+
+//Rutas para OP
+router.get('/cargarOp', authController.isAuthenticated, cargarOp.getCargarOp);
+router.post('/cargarOp', authController.isAuthenticated, cargarOp.postCargarOp);
+// Nueva ruta para buscar OPs 
+router.get('/actualizarOp', authController.isAuthenticated, cargarOp.getActualizarOp);
+router.post('/actualizarOp', authController.isAuthenticated, cargarOp.postActualizarOp);
+router.get('/buscarOps', authController.isAuthenticated, cargarOp.getListarOps); 
+router.get('/detalleOp/:opId', authController.isAuthenticated, cargarOp.getDetalleOp);
 
 module.exports = router;

@@ -1,0 +1,29 @@
+<%- include('partials/head') %> 
+    <link rel="stylesheet" href="./css/estiloOp.css">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('partials/header') %> 
+
+    <h1>Cargar OP</h1>
+    <form action="cargarOp" id="formOp" method="POST">
+
+        <label for="op">OP:</label>
+        <input type="text" name="op" required id="op" autocomplete="off"><br>
+
+        <label for="producto">Producto:</label>
+        <input type="text" name="producto" id="producto" autocomplete="off">
+        <div id="suggestionsContainerProducto" class="suggestions-container"></div><br>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" id="cantidad"><br>
+
+        <label for="fechaIngreso">Fecha de ingreso:</label>
+        <input type="date" name="fechaIngreso" id="fechaIngreso"><br>
+
+        <button type="submit">Cargar</button>
+
+    </form>
+    <script src="./js/listarProductosOp.js"></script>
+</body>
+</html>
