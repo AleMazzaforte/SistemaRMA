@@ -17,17 +17,13 @@ module.exports = {
 
             const query = 'INSERT INTO usuarios (nombre, password) VALUES (?, ?)';
 
-            conn.query(query, [username, hashedPassword], (err, result) => {
-                if (err) {
-                    console.error('Error inserting user:', err);
-                    return res.status(500).send('Error al cargar usuario');
-                }
-                console.log('Usuario insertado:', result);
-                res.redirect('/cargarUsuario');
-            });
+            const [result] = await conn.query(query, [username, hashedPassword]);
+            console.log('Usuario insertado:', result);
+            res.redirect('/cargarUsuario');
         } catch (error) {
-            console.error('Error encriptando la contraseña:', error);
-            res.status(500).send('Error interno del servidor');
+            console.error('Error en el servidor:', error);
+            res.status(500).send('Error al cargar usuario');
         }
     }
 };
+

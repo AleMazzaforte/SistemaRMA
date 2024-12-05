@@ -2,20 +2,23 @@ const { conn } = require('../bd/bd');
 
 module.exports = {
 
-    postAgregarClienteForm: async (req, res) => {
-        const { nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;  
-        let connection;
-        try {
-            connection = await conn.getConnection(); // Obtén la conexión del pool
+    postAgregarClienteForm: async (req, res) => { 
+        const { nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body; 
+        let connection; 
+        try { 
+            connection = await conn.getConnection(); 
+            // Obtén la conexión del pool 
             const query = `INSERT INTO clientes (nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`; 
-            const [results] = await connection.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega]); 
+            // Manejar valor vacío para teléfono 
+            const telefonoValue = telefono.trim() === '' ? null : telefono; 
+            const [results] = await connection.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefonoValue, transporte, seguro, condicionDeEntrega]); 
             res.redirect('/'); 
-        } catch (error) {
-            console.error('Error interno del servidor:', error);
+        } catch (error) { 
+            console.error('Error interno del servidor:', error); 
             res.status(500).send('Error interno del servidor'); 
-        } finally {
-            if (connection) connection.release(); // Libera la conexión
-        }
+        } finally { 
+            if (connection) connection.release(); // Libera la conexión 
+            } 
     },
 
     getListarClientes: async (req, res) => {

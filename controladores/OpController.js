@@ -1,281 +1,801 @@
 const { conn } = require('../bd/bd');
 
 let productos = [
-    {
-      "MODELO": "111L",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "133 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "197 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "73 M",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "73 A",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "133 C",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "111S",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "297 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "196 C",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "111S",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "GI190 N",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "46 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 N",
-      "CANTIDAD": 3,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "664 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "662 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "664 C",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "111L",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "111L",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "111L",
-      "CANTIDAD": 8,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 M",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 C",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "85A",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "111S",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "28 XL",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": 1060,
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": 117,
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "664 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "105A s/c",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 N",
-      "CANTIDAD": 4,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "85A",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": 111,
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "664 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "73 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 C",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "133 N",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": 1060,
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "664 N",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": 1060,
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "111L",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "111S",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "105A",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "63 M",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": 1060,
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "296 M",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "133 A",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": 117,
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "297 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "206 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "197 N",
-      "CANTIDAD": 2,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "197 N",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    },
-    {
-      "MODELO": "196 C",
-      "CANTIDAD": 1,
-      "MARCA": "BLOW INK"
-    }
+  {
+    "MODELO": "105A s\/c",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "85A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "48A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "667 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "22 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 135,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "73 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "05A-80A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "60 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "197 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "196 M",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "196 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "21 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "21 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "48A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "85A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "667 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "667 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "197 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 297,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 135,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "206 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "122 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 3,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "78A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "H105A",
+    "CANTIDAD": 4,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "79A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "667 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 1060,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 1060,
+    "CANTIDAD": 3,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "74 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "667 N",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "60 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "60 N",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 4,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 3,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 3,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "73 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "73 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "206 M",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "297 N",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "296 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "296 M",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "296 A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "60 N",
+    "CANTIDAD": 28,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "46 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "85A",
+    "CANTIDAD": 4,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105 S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "111L",
+    "CANTIDAD": 5,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "206 N",
+    "CANTIDAD": 4,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "15 N",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "45 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "197 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 1060,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "60 N ",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N ",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 1060,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "297 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 1060,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 297,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 1060,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105 S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "197 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 M",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "206 N",
+    "CANTIDAD": 3,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "296 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "PB219",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "196 A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "196 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "196 M",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "197 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "111L",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 M",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 135,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "60 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "122 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "296 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 1060,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "111L",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "111L",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "122 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "197 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "73 A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "73 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "197 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "122 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "111L",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 1060,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "DR19",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "206 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 45,
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "667 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "660-2370",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A s\/c",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "111L",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "310\/377",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "85A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "DR1060",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S\/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "73 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "667 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "667 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "662 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "206 C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "45 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "58A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 135,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": 135,
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "297 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "297 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "196 M",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "196 M",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "197 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 A",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 M",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "133 C",
+    "CANTIDAD": 2,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "664 N",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   },
+   {
+    "MODELO": "105A S/C",
+    "CANTIDAD": 1,
+    "MARCA": "BLOW"
+   }
   ]
   
   
@@ -357,25 +877,5 @@ module.exports = {
             if (connection) connection.release();
         }
     },
-
-    //ruta temporal
-    getCargarDatosViejos: (req, res) => {
-        res.render('cargarProductosViejos')
-    },
-
-    guardarProductos: async (req, res) => { 
-        const query = `INSERT INTO productosViejos (nombre, cantidad) VALUES (?, ?)`; 
-        let connection; 
-        try { 
-            connection = await conn.getConnection(); 
-            for (const producto of productos) { 
-                await connection.query(query, [producto.MODELO, producto.CANTIDAD]); 
-            } res.send('Productos guardados exitosamente'); 
-        } catch (error) { 
-            console.error('Error al guardar productos:', error); 
-            res.status(500).send('Error al guardar productos'); 
-        } finally { 
-            if (connection) connection.release();
-        }
-    }
+   
 }

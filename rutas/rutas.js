@@ -4,7 +4,7 @@ const authController = require('../controladores/loginController');
 const mainController = require('../controladores/mainController');
 const usuarioController = require('../controladores/usuarioController.js');
 const cliente = require('../controladores/clientesController.js');
-
+const estadisticas = require('../controladores/estadisticasController.js');
 const productosGeneralController = require('../controladores/productosGeneralController');
 const cargarRma = require('../controladores/cargarRmaController.js');
 const gestionarRma = require('../controladores/gestionarRmaController.js');
@@ -92,9 +92,7 @@ router.post('/actualizarOp', authController.isAuthenticated, cargarOp.postActual
 router.get('/buscarOps', authController.isAuthenticated, cargarOp.getListarOps); 
 router.get('/detalleOp/:opId', authController.isAuthenticated, cargarOp.getDetalleOp);
 
-//Ruta temporal
-router.get('/cargardatosviejos', authController.isAuthenticated, cargarOp.getCargarDatosViejos);
-
-router.post('/guardarProductos', cargarOp.guardarProductos);
+//Rutas para estadisticas
+router.get('/estadisticas', authController.isAuthenticated, estadisticas.getEstadisticas);
 
 module.exports = router;

@@ -10,52 +10,55 @@
     <h2 id="tituloCargarCliente">Cargar cliente</h2>
     <form action="/agregarCliente" method="POST" id="formCliente">
         
-        <input type="hidden" id="id" name="id" value="" style="display: none;">
+        <input type="hidden" id="id" name="id" value="" style="display: none;"> 
         
-
-        <!-- Nombre -->
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" autocomplete="off" required>
-        <div id="suggestionsContainer" style="display: none;"></div><br>
-
-        <!-- CUIT -->
-        <label for="cuit">CUIT:</label>
-        <input type="text" id="cuit" name="cuit" ><br>
-
-        <!-- Provincia -->
-        <label for="provincia">Provincia:</label>
-        <input type="text" id="provincia" name="provincia" ><br>
-
-        <!-- Ciudad -->
-        <label for="ciudad">Ciudad:</label>
-        <input type="text" id="ciudad" name="ciudad" ><br>
-
-        <!-- Domicilio -->
-        <label for="domicilio">Domicilio:</label>
-        <input type="text" id="domicilio" name="domicilio" ><br>
-
-        <!-- Teléfono -->
-        <label for="telefono">Teléfono:</label>
-        <input type="number" id="telefono" name="telefono" ><br>
-
-        <!-- Transporte -->
-        <label for="transporte">Transporte:</label>
-        <input type="text" id="transporte" name="transporte" autocomplete="off">
-        <div></div>
-        <div id="suggestionsTransportes" class="suggestions-container" style="display: none;" ></div><br>
-
-        <!-- Seguro -->
-        <label for="seguro">Seguro:</label>
-        <input type="text" id="seguro" name="seguro" ><br>
-
-        <!-- Condición de entrega -->
-        <label for="condicionDeEntrega">Condición de Entrega:</label>
-        <input type="text" id="condicionDeEntrega" name="condicionDeEntrega" ><br>
-
-        <button type="submit" id="botonCargar">Cargar Cliente</button>
-        <button type="button" id="editButton">Editar</button>
-        <button id="botonActualizar" class="botonEdicion">Actualizar</button>
-        <button id="botonEliminar" class="botonEdicion">Eliminar</button>
+        <!-- Nombre --> 
+         <label for="nombre">Nombre:</label> 
+         <input type="text" id="nombre" name="nombre" autocomplete="off" required> 
+         <div id="suggestionsContainer" style="display: none;"></div><br> 
+         
+        <!-- CUIT --> 
+         <label for="cuit">CUIT:</label> 
+         <input type="text" id="cuit" name="cuit"><br>
+          
+        <!-- Provincia --> 
+         <label for="provincia">Provincia:</label> 
+         <input type="text" id="provincia" name="provincia"><br>
+          
+        <!-- Ciudad --> 
+         <label for="ciudad">Ciudad:</label>
+         <input type="text" id="ciudad" name="ciudad"><br> 
+           
+        <!-- Domicilio --> 
+         <label for="domicilio">Domicilio:</label> 
+         <input type="text" id="domicilio" name="domicilio"><br> 
+            
+        <!-- Teléfono --> 
+         <label for="telefono">Teléfono:</label> 
+         <input type="number" id="telefono" name="telefono"><br> 
+             
+        <!-- Transporte --> 
+         <label for="transporte">Transporte:</label> 
+         <input type="text" id="transporte" name="transporte" autocomplete="off"> 
+         <div id="suggestionsTransportes" class="suggestions-container" style="display: none;"></div><br> 
+              
+        <!-- Seguro --> 
+         <label for="seguro">Seguro:</label> 
+         <input type="text" id="seguro" name="seguro"><br> 
+               
+        <!-- Condición de entrega --> 
+         <label for="condicionDeEntrega">Condición de Entrega:</label> 
+         <input type="text" id="condicionDeEntrega" name="condicionDeEntrega"><br> 
+        <!-- OP --> 
+         <label for="op">OP:</label> 
+         <input type="text" id="op" name="op" autocomplete="off"> 
+         <div></div>
+         <div id="suggestionsOp" class="suggestions-container" style="display: none;"></div><br> 
+         <button type="submit" id="botonCargar">Cargar Cliente</button> 
+         <button type="button" id="editButton">Editar</button> 
+         <button id="botonActualizar" class="botonEdicion">Actualizar</button>
+               
+         <button id="botonEliminar" class="botonEdicion">Eliminar</button>
     </form>
     <div style="display: none" id="clienteSearch">
         <label for="clienteSearch"  id="labelClienteSearch">Nombre: </label>
@@ -67,5 +70,6 @@
     <%- include('partials/footer') %> 
     <script src="./js/listarClientes.js"></script>
     <script src="./js/actualizarClientes.js"></script>
+    <script src="./js/sugerenciasOpClientes.js"></script>
 </body>
 </html>
