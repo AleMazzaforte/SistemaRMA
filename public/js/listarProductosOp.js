@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             productoDiv.classList.add('producto-item');
             productoDiv.innerHTML = `
                 <span>Producto: ${producto.producto} - Cantidad: ${producto.cantidad}</span>
-                <button type="button" onclick="eliminarProducto(${index})">Eliminar</button>
+                <button type="button" class = "botonEliminarItem" onclick="eliminarProducto(${index})">Eliminar</button>
             `;
             sugerenciasProductosDiv.appendChild(productoDiv);
         });

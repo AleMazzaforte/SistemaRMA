@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const nombreInput = document.getElementById('nombre');
     const suggestionsContainer = document.getElementById('suggestions-container');
+    const datosClienteDiv = document.getElementById('datosCliente');
     let clientes = [];
     let filteredClientes = [];
     let activeIndex = -1; // Índice de la sugerencia activa
@@ -11,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/buscarCliente');
             const data = await response.json();
             clientes = data;  // Guardamos los resultados
-           
         } catch (error) {
             console.error('Error al obtener clientes:', error);
         }
@@ -43,11 +43,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Selecciona un cliente
-    function selectCliente(cliente) {
+    // Selecciona un cliente y verifica RMA
+    async function selectCliente(cliente) {
         nombreInput.value = cliente.nombre; // Mostramos el nombre en el input
         suggestionsContainer.style.display = 'none'; // Ocultar sugerencias
-        const idSeleccionado= cliente.id;
+
+        try {
+            const response = await fetch('/verificarRMAyBuscarCliente', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre: cliente.nombre })
+            });
+
+            const data = await response.json();
+            if (data.alerta) {
+                alert(data.alerta);
+            }
+
+            if (data.cliente) {
+                cargarDatosCliente(data.cliente);
+            }
+        } catch (error) {
+            console.error('Error al verificar RMA:', error);
+        }
+    }
+
+    // Cargar datos del cliente en los inputs
+    function cargarDatosCliente(cliente) {
+        document.getElementById('cuit').value = cliente.cuit;
+        document.getElementById('provincia').value = cliente.provincia;
+        document.getElementById('ciudad').value = cliente.ciudad;
+        document.getElementById('direccion').value = cliente.direccion;
+        document.getElementById('telefono').value = cliente.telefono;
+        document.getElementById('seguro').value = cliente.seguro;
+        document.getElementById('entrega').value = cliente.condicion_envio;
+        document.getElementById('pago').value = cliente.condicion_pago;
     }
 
     // Maneja las teclas (flechita arriba, flechita abajo, Enter)
@@ -60,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             activeIndex = (activeIndex - 1 + suggestionItems.length) % suggestionItems.length;
             updateActiveItem(suggestionItems);
         } else if (event.key === 'Enter' && activeIndex > -1) {
-            event.preventDefault(); 
+            event.preventDefault();
             const selectedCliente = filteredClientes[activeIndex]; // Usar lista filtrada
             selectCliente(selectedCliente);
         }
@@ -97,4 +127,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // Obtener clientes al cargar la página
     getClientes();
 });
-

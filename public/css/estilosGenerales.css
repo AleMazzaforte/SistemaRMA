@@ -1,6 +1,6 @@
 :root {
     --primary-color: #3498db;       /* Azul principal */
-    --secondary-color: #2ecc71;     /* Verde secundario */
+    --secondary-color: #85ddaa;     /* Verde secundario */
     --background-color: #f5f5f5;    /* Fondo claro */
     --bordesInput: #7c7878;          /* Texto oscuro */
     --accent-color: #e74c3c;        /* Rojo de acento */
@@ -169,4 +169,17 @@ button:hover {
 
 .botonEliminar:hover {
     background-color: #c0392b; /* Rojo más oscuro */
+}
+
+footer {
+    background-color: #bcdaf3;
+    font-size: 0.7rem;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 15px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Sombrado opcional */
+    height: 30px;
 }

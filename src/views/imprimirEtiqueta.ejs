@@ -1,22 +1,45 @@
 <%- include('partials/head') %>
     <title>Impresion de etiquetas</title>
-    
     <link rel="stylesheet" href="./css/estilosEtiquetas.css">
 </head>
 <body>
-    <%- include('partials/header') %> 
+    <%- include('partials/header') %>
     <h1>Imprimir etiquetas</h1>
 
-    <form action="/buscarCliente" id="formCliente">
+    <form id="formCliente">
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" id="nombre" autocomplete="off">
-        <div></div>
         <div id="suggestions-container"></div>
     </form>
-   
-    
-    
 
-    <script src="./js/listarCLientesEtiquetas.js"></script>
+    <div id="datosCliente">
+        <label for="cuit">CUIT:</label>
+        <input type="text" name="cuit" id="cuit">
+
+        <label for="provincia">Provincia:</label>
+        <input type="text" name="provincia" id="provincia">
+
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" name="ciudad" id="ciudad">
+
+        <label for="direccion">Dirección:</label>
+        <input type="text" name="direccion" id="direccion">
+
+        <label for="telefono">Teléfono:</label>
+        <input type="number" name="telefono" id="telefono">
+
+        <label for="seguro">Seguro:</label>
+        <input type="text" name="seguro" id="seguro">
+
+        <label for="entrega">Entrega:</label>
+        <input type="text" name="entrega" id="entrega">
+
+        <label for="pago">Cond. de pago:</label>
+        <input type="text" name="pago" id="pago">
+    </div>
+
+    <%- include('partials/footer') %>
+    <script src="./js/listarClientesEtiquetas.js"></script>
 </body>
 </html>
+
