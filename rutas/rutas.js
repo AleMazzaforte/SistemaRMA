@@ -93,6 +93,6 @@ router.get('/buscarOps', authController.isAuthenticated, cargarOp.getListarOps);
 router.get('/detalleOp/:opId', authController.isAuthenticated, cargarOp.getDetalleOp);
 
 //Rutas para estadisticas
-router.get('/estadisticas', authController.isAuthenticated, estadisticas.getEstadisticas);
+router.get('/estadisticas', authController.isAuthenticated, estadisticas.getEstadisticasOp);
 
 module.exports = router;

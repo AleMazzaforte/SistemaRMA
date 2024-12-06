@@ -1,14 +1,33 @@
 <%- include('partials/head') %> 
+    <link rel="stylesheet" href="./css/estilosEstadisticas.css">
     <title>Estadísticas</title>
 </head>
 <body>
     <%- include('partials/header') %> 
     
-<h1>Top Jet</h1>
+<!--h1>Top Jet</h1>
 
-<h1>Leadder Succsess</h1>
+<h1>Leadder Succsess</h1-->
 
-
-    <%- include('partials/footer') %> 
+<h1>Estadísticas de Productos Fallados</h1> 
+<table class="centered-table" id="tablaEstadisticas"> 
+    <thead> 
+        <tr> 
+            <th>Producto</th> 
+            <th>Total Importado</th> 
+            <th>Total Devuelto</th> 
+            <th>Porcentaje Fallados</th> 
+        </tr> 
+    </thead> 
+    <tbody> 
+        <% estadisticas.forEach(estadistica => { %> <tr> 
+            <td><%= estadistica.producto %></td> 
+            <td><%= estadistica.total_importado %></td> 
+            <td><%= estadistica.total_devuelto %></td> 
+            <td><%= estadistica.porcentaje_fallados %>%</td> 
+        </tr> 
+        <% }) %> 
+    </tbody><br>
+    <!--%- include('partials/footer') %--> 
 </body>
 </html>

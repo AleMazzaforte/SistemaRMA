@@ -1,0 +1,28 @@
+body { 
+    font-family: Arial, sans-serif; 
+    
+} 
+
+.centered-table { 
+    margin: 0 auto; 
+    border-collapse: collapse; 
+    width: 60%; /* Ancho de la tabla ajustable */ 
+} 
+
+.centered-table th, .centered-table td {
+    border: 1px solid #dddddd; 
+    padding: 8px; text-align: center; 
+} 
+
+.centered-table th { 
+    background-color: #3498db; 
+    color: black; 
+} 
+
+.centered-table tr:nth-child(even) {
+     background-color: #b4d2e6; 
+} 
+
+.centered-table tr:hover { 
+    background-color: #ddd; 
+}
