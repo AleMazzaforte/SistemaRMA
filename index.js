@@ -24,7 +24,7 @@ app.use('/', rutas);
 
 
 
-app.listen(port, '0.0.0.0', (req, res) => {
+app.listen(port, (req, res) => {
     console.log(`Servidor corriendo en puerto:  ${port}`);
 })
 

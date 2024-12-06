@@ -5,8 +5,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const productoInput = document.getElementById('producto');
     const cantidadInput = document.getElementById('cantidad');
     const añadirProductoBtn = document.getElementById('añadirProducto');
+    const guardarOpBtn = document.getElementById('guardarOp');
     const sugerenciasProductosDiv = document.getElementById('sugerenciasProductos');
-    const suggestionsContainer = document.querySelector('#suggestionsContainerProducto'); 
+    const suggestionsContainer = document.querySelector('#suggestionsContainerProducto');
     let productos = [];
     let productosList = [];
     let activeSuggestionIndex = -1;
@@ -76,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 suggestionsContainer.scrollTop += (suggestionRect.bottom - containerRect.bottom);
             }
         }
-    } 
+    }
 
     // Controla las teclas de flecha para navegar en las sugerencias
     function handleArrowKeys(event) {
@@ -104,6 +105,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         displaySuggestions(matches);
     });
 
+    // Evitar envío de formulario al presionar Enter en cualquier campo
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            if (document.activeElement !== añadirProductoBtn && document.activeElement !== guardarOpBtn) {
+                event.preventDefault();
+            }
+        }
+    });
+
     // Añadir producto a la lista
     añadirProductoBtn.addEventListener('click', () => {
         const producto = productoInput.value.trim();
@@ -116,6 +126,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             productoInput.value = '';
             cantidadInput.value = '';
             productoInput.focus(); // Mover el foco al input de producto
+            // Desplazar la página hacia abajo 
+            window.scrollTo({ 
+                top: document.body.scrollHeight, 
+                behavior: 'smooth' // Para un desplazamiento suave 
+            });
         } else {
             alert('Por favor, completa ambos campos antes de añadir.');
         }
@@ -129,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             productoDiv.classList.add('producto-item');
             productoDiv.innerHTML = `
                 <span>Producto: ${producto.producto} - Cantidad: ${producto.cantidad}</span>
-                <button type="button" class = "botonEliminarItem" onclick="eliminarProducto(${index})">Eliminar</button>
+                <button type="button" class="botonEliminarItem" onclick="eliminarProducto(${index})">Eliminar</button>
             `;
             sugerenciasProductosDiv.appendChild(productoDiv);
         });
@@ -177,10 +192,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Carga los productos al cargar la página
     await fetchProductos();
 
-    // Escuchar teclas de navegación solo si el contenedor de sugerencias está activo 
+    // Escuchar teclas de navegación solo si el contenedor de sugerencias está activo
     document.addEventListener('keydown', (event) => { 
         if (suggestionsContainer.style.display === 'block') {
-             handleArrowKeys(event); 
-            } 
-        }); 
-    });
+            handleArrowKeys(event); 
+        } 
+    }); 
+});
+

@@ -3,8 +3,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const suggestionsContainerOp = document.getElementById('suggestionsContainerOp');
     const opInput = document.getElementById('op');
     const tablaProductos = document.getElementById('tablaProductos');
+    const botonActualizar = document.getElementById('botonActualizar');
     let ops = [];
     let activeSuggestionIndexOp = -1;
+
+    // Deshabilitar el botón de actualizar al cargar la página
+    botonActualizar.disabled = true;
 
     // Obtener la lista de OPs únicas
     async function fetchOps() {
@@ -61,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Mostrar productos y cantidades en una tabla
     function displayProductos(productos) {
         let html = '<table>';
-        html += '<tr><th>Producto</th><th>Cantidad</th></tr>';
+        html += '<tr><th>Producto</th><th>Cantidad</th><th>Acciones</th></tr>';
         productos.forEach((producto, index) => {
             html += `<tr>
                         <td>
@@ -69,6 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <div class="suggestions-container" id="suggestionsContainerProducto${index}"></div>
                         </td>
                         <td><input type="number" name="cantidad${index}" class="cantidad" value="${producto.cantidad}"></td>
+                        <td><button type="button" onclick="eliminarFila(${index}, '${producto.producto}')">Eliminar</button></td>
                      </tr>`;
         });
         html += '</table>';
@@ -79,13 +84,52 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         productoInputs.forEach((input, index) => {
             const suggestionsContainer = document.getElementById(`suggestionsContainerProducto${index}`);
-            input.addEventListener('input', () => fetchProductos(input, suggestionsContainer));
+            input.addEventListener('input', () => {
+                fetchProductos(input, suggestionsContainer);
+                botonActualizar.disabled = false; // Habilitar el botón de actualizar al modificar el input
+            });
             input.addEventListener('keydown', (e) => navigateSuggestions(e, suggestionsContainer));
+        });
+
+        const cantidadInputs = document.querySelectorAll('.cantidad');
+        cantidadInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                botonActualizar.disabled = false; // Habilitar el botón de actualizar al modificar el input
+            });
         });
     }
 
+    // Definir la función eliminarFila
+    window.eliminarFila = async (index, producto) => {
+        const filas = tablaProductos.querySelectorAll('tr');
+
+        if (index >= 0 && index < filas.length - 1) { // Evitar eliminar la cabecera
+            // Eliminar de la base de datos
+            try {
+                const response = await fetch('/eliminarProducto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ producto })
+                });
+
+                if (!response.ok) {
+                    alert('Error al eliminar el producto de la base de datos');
+                    return;
+                }
+
+                filas[index + 1].remove(); // +1 para evitar eliminar la cabecera
+            } catch (error) {
+                console.error('Error al eliminar el producto:', error);
+                alert('Error al eliminar el producto de la base de datos');
+            }
+        }
+
+        botonActualizar.disabled = false; // Habilitar el botón de actualizar al eliminar un producto
+    };
+
     // Definir la función navigateSuggestions
     function navigateSuggestions(e, container) {
+        if (!container) return; // Verificar si el contenedor existe
         const items = container.querySelectorAll('.suggestion-item');
         if (items.length === 0) return; // Si no hay sugerencias, salir
 
@@ -100,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 items[selectedIndex].click();
             }
         }
-        
+
         container.dataset.selectedIndex = selectedIndex;
         highlightSuggestion(items, selectedIndex);
     }
@@ -114,6 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Obtener productos para los inputs de producto
     async function fetchProductos(input, container) {
+        if (!container) return; // Verificar si el contenedor existe
         const query = input.value.trim().toLowerCase();
         if (query.length < 1) {
             container.style.display = 'none';
@@ -126,7 +171,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const productos = data.filter(producto => producto.sku.toLowerCase().includes(query));
 
             container.innerHTML = '';
-            productos.forEach((producto, index) => {
+            productos.forEach((producto) => {
                 const suggestion = document.createElement('div');
                 suggestion.textContent = producto.sku;
                 suggestion.classList.add('suggestion-item');
@@ -185,7 +230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         scrollToActiveSuggestionOp(); // Asegura que la sugerencia activa esté visible
     }
 
-    // Desplaza el contenedor para que la sugerencia activa esté siempre visible
+    // Desplazar el contenedor para que la sugerencia activa esté siempre visible
     function scrollToActiveSuggestionOp() {
         const suggestions = suggestionsContainerOp.querySelectorAll('.suggestion-item');
         const activeSuggestion = suggestions[activeSuggestionIndexOp];
@@ -208,42 +253,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             handleArrowKeysOp(event);
         }
     });
-});
 
+    // Manejar la actualización de OPs
+    botonActualizar.addEventListener('click', async () => {
+        const op = opInput.value.trim();
+        const productos = [];
+        const productoInputs = document.querySelectorAll('.producto');
+        const cantidadInputs = document.querySelectorAll('.cantidad');
 
-// Manejar la actualización de OPs
-document.getElementById('botonActualizar').addEventListener('click', async () => {
-    const op = document.getElementById('op').value;
-    const productos = [];
-    const productoInputs = document.querySelectorAll('.producto');
-    const cantidadInputs = document.querySelectorAll('.cantidad');
-
-    productoInputs.forEach((input, index) => {
-        const producto = input.dataset.originalProducto || input.value; // Usa dataset para guardar el producto original
-        const nuevoProducto = input.value;
-        const cantidad = cantidadInputs[index].value;
-
-        productos.push({ producto, nuevoProducto, cantidad });
-    });
-
-    try {
-        const response = await fetch('/actualizarOp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ op, productos: JSON.stringify(productos) }) // Aquí convertimos a JSON la cadena de productos
+        productoInputs.forEach((input, index) => {
+            const producto = input.value.trim();
+            const cantidad = cantidadInputs[index].value.trim();
+            if (producto && cantidad) {
+                productos.push({ producto, cantidad });
+            }
         });
 
-        if (response.ok) {
-            alert('OP actualizada exitosamente');
-        } else {
+        try {
+            const response = await fetch('/actualizarOp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ op, productos })
+            });
+
+            if (response.ok) {
+                alert('OP actualizada exitosamente');
+                botonActualizar.disabled = true; // Deshabilitar el botón después de la actualización
+            } else {
+                alert('Error al actualizar la OP');
+            }
+        } catch (error) {
+            console.error('Error al actualizar la OP:', error);
             alert('Error al actualizar la OP');
         }
-    } catch (error) {
-        console.error('Error al actualizar la OP:', error);
-        alert('Error al actualizar la OP');
-    }
+    });
+
 });
 
-
-
-
+        
