@@ -52,6 +52,10 @@ input, textarea {
     display: none; /* Ocultar por defecto */
 }
 
+#suggestionsMarca {
+    
+}
+
 /* Estilos para las sugerencias */
 .suggestion-item {
     padding: 5px; /* Espaciado interno */

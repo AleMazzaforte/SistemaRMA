@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const nombreInput = document.getElementById('nombre');
     const suggestionsContainer = document.getElementById('suggestions-container');
-    const datosClienteDiv = document.getElementById('datosCliente');
     let clientes = [];
     let filteredClientes = [];
     let activeIndex = -1; // Índice de la sugerencia activa
@@ -56,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
+            console.log('data', data)
             if (data.alerta) {
                 alert(data.alerta);
             }
@@ -67,17 +67,17 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error al verificar RMA:', error);
         }
     }
-
+    
     // Cargar datos del cliente en los inputs
     function cargarDatosCliente(cliente) {
         document.getElementById('cuit').value = cliente.cuit;
         document.getElementById('provincia').value = cliente.provincia;
         document.getElementById('ciudad').value = cliente.ciudad;
-        document.getElementById('direccion').value = cliente.direccion;
+        document.getElementById('direccion').value = cliente.domicilio;
         document.getElementById('telefono').value = cliente.telefono;
         document.getElementById('seguro').value = cliente.seguro;
-        document.getElementById('entrega').value = cliente.condicion_envio;
-        document.getElementById('pago').value = cliente.condicion_pago;
+        document.getElementById('entrega').value = cliente.condicionDeEntrega;
+        document.getElementById('pago').value = cliente.condicionDePago;
     }
 
     // Maneja las teclas (flechita arriba, flechita abajo, Enter)
@@ -127,3 +127,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Obtener clientes al cargar la página
     getClientes();
 });
+

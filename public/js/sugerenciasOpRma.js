@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const opInput = document.getElementById('op');
+    const opInput = document.getElementById('opLote'); 
     const suggestionsOpContainer = document.getElementById('suggestionsOp');
     let ops = [];
     let highlightedIndex = -1; // Índice del elemento resaltado
@@ -19,17 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
         suggestionsOpContainer.innerHTML = '';
         if (matches.length > 0) {
             suggestionsOpContainer.style.display = 'block';
-            suggestionsOpContainer.style.backgroundColor = 'white'
+            suggestionsOpContainer.style.backgroundColor = 'white';
             const inputRect = opInput.getBoundingClientRect();
             suggestionsOpContainer.style.top = `${inputRect.bottom + window.scrollY}px`;
+            suggestionsOpContainer.style.transform = 'translateY(-9px)'; // Ajustar el valor negativo para moverlo hacia arriba
             suggestionsOpContainer.style.left = `${inputRect.left + window.scrollX}px`;
             suggestionsOpContainer.style.width = `${inputRect.width}px`;
 
             matches.forEach((op, index) => {
                 const suggestion = document.createElement('div');
-                suggestion.textContent = op.op; // Asegúrate de que este campo es correcto
+                suggestion.textContent = op.op; 
                 suggestion.classList.add('suggestion-item');
-                suggestion.addEventListener('click', () => selectOp(op.op)); // Asegúrate de que este campo es correcto
+                suggestion.addEventListener('click', () => selectOp(op.op)); 
                 suggestion.addEventListener('mouseenter', () => setActiveSuggestion(index));
                 suggestionsOpContainer.appendChild(suggestion);
             });
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault(); // Evitar el desplazamiento de la página
         } else if (e.key === 'Enter') {
             if (highlightedIndex >= 0 && suggestionItems[highlightedIndex]) {
-                selectOp(suggestionItems[highlightedIndex].textContent); // Seleccionar la OP resaltada
+                selectOp(suggestionItems[highlightedIndex].textContent);
                 e.preventDefault(); // Evitar el envío del formulario
             }
         }
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     opInput.addEventListener('input', (event) => {
         const query = event.target.value.trim();
         if (query.length > 0) {
-            const matches = ops.filter(op => op.op.toLowerCase().includes(query.toLowerCase())); // Asegúrate de que este campo es correcto
+            const matches = ops.filter(op => op.op.toLowerCase().includes(query.toLowerCase()));
             displaySuggestions(matches);
         } else {
             suggestionsOpContainer.style.display = 'none';
@@ -111,4 +112,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cargar OP al cargar la página
     fetchOps();
 });
+
 

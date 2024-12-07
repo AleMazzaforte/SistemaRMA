@@ -25,17 +25,13 @@ module.exports = {
     },
 
     listarMarcas: async (req, res) => { 
-        const query = 'SELECT nombre FROM marcas'; 
-        let connection; 
-        
-        try { connection = await conn.getConnection(); 
-            const [rows] = await connection.query(query); 
-            const marcas = rows.map(row => row.nombre); 
-            res.json({ success: true, marcas }); 
-        } catch (error) { console.error('Error al listar marcas:', error); 
-            res.status(500).send('Error al listar marcas'); 
-        } finally { if (connection) connection.release(); 
-
+        try { 
+            const connection = await conn.getConnection(); 
+            const [results] = await connection.query('SELECT * FROM marcas'); 
+            connection.release(); res.json(results); 
+        } catch (error) { 
+            console.error('Error al obtener las marcas:', error); 
+            res.status(500).send('Error al obtener las marcas'); 
         } 
     }
 };

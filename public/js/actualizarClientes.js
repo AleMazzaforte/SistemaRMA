@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const transporte = document.getElementById('transporte').value;
         const seguro = document.getElementById('seguro').value;
         const condicionDeEntrega = document.getElementById('condicionDeEntrega').value;
-
+        const condicionDePago = document.getElementById('pago').value;
+        const telefonoInput = telefono.trim() || null;
         try {
             const response = await fetch(`/actualizarCliente/${id}`, {
                 method: 'POST',
@@ -28,16 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     provincia,
                     ciudad,
                     domicilio,
-                    telefono,
+                    telefono: telefonoInput,
                     transporte,
                     seguro,
                     condicionDeEntrega,
+                    condicionDePago
                 }),
             });
             
             if (response.ok) {
                 const result = await response.json();
-                if (result.message) {
+                if (result.message) { 
                     alert(result.message); // Muestra el mensaje del servidor
                     location.reload(); // Recarga la página
                 } else {

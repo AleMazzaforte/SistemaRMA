@@ -49,11 +49,12 @@
         <!-- Condición de entrega --> 
          <label for="condicionDeEntrega">Condición de Entrega:</label> 
          <input type="text" id="condicionDeEntrega" name="condicionDeEntrega"><br> 
-        <!-- OP --> 
-         <label for="op">OP:</label> 
-         <input type="text" id="op" name="op" autocomplete="off"> 
-         <div></div>
-         <div id="suggestionsOp" class="suggestions-container" style="display: none;"></div><br> 
+         
+        <!-- Condicion de pago --> 
+         <label for="pago">Condición de pago</label> 
+         <input type="text" id="pago" name="pago"> <br>
+         
+         
          <button type="submit" id="botonCargar">Cargar Cliente</button> 
          <button type="button" id="editButton">Editar</button> 
          <button id="botonActualizar" class="botonEdicion">Actualizar</button>
@@ -70,6 +71,6 @@
     <%- include('partials/footer') %> 
     <script src="./js/listarClientes.js"></script>
     <script src="./js/actualizarClientes.js"></script>
-    <script src="./js/sugerenciasOpClientes.js"></script>
+    
 </body>
 </html>

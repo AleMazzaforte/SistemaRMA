@@ -48,7 +48,7 @@ button:hover {
 }
 
 #suggestions-container {
-    position: absolute;
+    position: relative;
     background: white;
     border: 1px solid var(--bordesInput);
     border-radius: 5px;
@@ -65,15 +65,15 @@ button:hover {
 }
 
 .suggestion-item:hover, .suggestion-item.active {
-    background: var(--secondary-color);
+    background: #c5c3c3;
     color: white;
 }
 
 #datosCliente {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    max-width: 800px;
+    gap: 10px;
+    max-width: 500px;
     margin: auto;
     padding: 20px;
     

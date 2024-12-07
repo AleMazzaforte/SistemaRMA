@@ -3,15 +3,15 @@ const { conn } = require('../bd/bd');
 module.exports = {
 
     postAgregarClienteForm: async (req, res) => { 
-        const { nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body; 
+        const { nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, pago } = req.body; 
         let connection; 
         try { 
             connection = await conn.getConnection(); 
             // Obtén la conexión del pool 
-            const query = `INSERT INTO clientes (nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`; 
+            const query = `INSERT INTO clientes (nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, condicionDePago) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`; 
             // Manejar valor vacío para teléfono 
             const telefonoValue = telefono.trim() === '' ? null : telefono; 
-            const [results] = await connection.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefonoValue, transporte, seguro, condicionDeEntrega]); 
+            const [results] = await connection.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefonoValue, transporte, seguro, condicionDeEntrega, pago]); 
             res.redirect('/'); 
         } catch (error) { 
             console.error('Error interno del servidor:', error); 
@@ -38,20 +38,19 @@ module.exports = {
     },
 
     postActualizarCliente: async (req, res) => {
-        const { nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega } = req.body;
+        const { nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, condicionDePago } = req.body;
         const { id } = req.params; // Obtener el ID del cliente desde los parámetros de la URL
-        
-
+    
         let connection;
         try {
             connection = await conn.getConnection(); // Obtén la conexión del pool
-            const query = `UPDATE clientes SET nombre = ?, cuit = ?, provincia = ?, ciudad = ?, domicilio = ?, telefono = ?, transporte = ?, seguro = ?, condicionDeEntrega = ? WHERE id = ?`;
-            const [results] = await connection.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, id]);
-
+            const query = `UPDATE clientes SET nombre = ?, cuit = ?, provincia = ?, ciudad = ?, domicilio = ?, telefono = ?, transporte = ?, seguro = ?, condicionDeEntrega = ?, condicionDePago = ? WHERE id = ?`;
+            const [results] = await connection.query(query, [nombre, cuit, provincia, ciudad, domicilio, telefono, transporte, seguro, condicionDeEntrega, condicionDePago, id]);
+    
             if (results.affectedRows === 0) {
                 return res.status(400).json({ message: 'No se realizaron cambios en el cliente' });
             }
-
+    
             res.json({ message: 'Cliente actualizado correctamente' });
         } catch (error) {
             console.error('Error al actualizar cliente:', error);
@@ -60,6 +59,7 @@ module.exports = {
             if (connection) connection.release(); // Libera la conexión
         }
     },
+    
 
     postEliminarCliente: async (req, res) => { 
         const { id } = req.params; let connection; 
@@ -68,12 +68,16 @@ module.exports = {
              const [results] = await connection.query(query, [id]); 
              if (results.affectedRows === 0) { 
                 return res.status(400).json({ message: 'Cliente no encontrado' }); 
-            } res.json({ message: 'Cliente eliminado correctamente' }); 
-        } catch (error) { 
+            } 
+            res.json({ message: 'Cliente eliminado correctamente' }); 
+        } 
+        catch (error) { 
             console.error('Error al eliminar cliente:', error);
             res.status(500).json({ message: 'Error al eliminar cliente' }); 
-        } finally { 
+        } 
+        finally { 
             if (connection) connection.release(); // Libera la conexión 
-            }
         }
+    }, 
+
 };

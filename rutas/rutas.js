@@ -73,6 +73,7 @@ router.post('/eliminarTransporte/:idTransporte', authController.isAuthenticated,
 router.get('/imprimirEtiqueta', authController.isAuthenticated, imprimirEtiqueta.getImprimirEtiqueta);
 router.post('/verificarRMAyBuscarCliente', authController.isAuthenticated, imprimirEtiqueta.verificarRMAyBuscarCliente); 
 
+
 //Rutas para marcas
 router.get('/cargarMarcas', authController.isAuthenticated, marcas.getCargarMarcas);
 router.post('/cargarMarcas', authController.isAuthenticated, marcas.postCargarMarcas);

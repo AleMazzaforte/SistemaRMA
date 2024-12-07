@@ -29,15 +29,17 @@
     
         <!-- Marca -->
         <label for="marca" class="campoOculto">Marca:</label>
-        <input type="text" id="marca" name="marca" autocomplete="off" required class="campoOculto">
+        <input type="text" id="marca" name="marca" autocomplete="off" required class="campoOculto" onchange="sugerirMarcas()">
     
         <!-- Solicita -->
         <label for="solicita" class="campoOculto">Solicita:</label>
         <input type="date" id="solicita" name="solicita" autocomplete="off" required class="campoOculto">
     
-        <!-- OP/Lote -->
-        <label for="opLote" class="campoOculto">OP/Lote:</label>
-        <input type="text" id="opLote" name="opLote" autocomplete="off" class="campoOculto">
+        <!-- OP --> 
+         <label for="opLote" class="campoOculto">OP/Lote:</label> 
+         <input type="text" id="opLote" name="opLote" autocomplete="off" class="campoOculto"> 
+         <div class="divrelleno"></div> 
+         <div id="suggestionsOp" class="suggestions-container" style="display: none;"></div> 
     
         <!-- Vencimiento -->
         <label for="vencimiento" class="campoOculto">Vencimiento:</label>
@@ -102,5 +104,7 @@
     <script src="./js/listarProductosRMA.js"></script>
     <script src="./js/gestionarRMA.js"></script>
     <script src="./js/imprimirEtiquetas.js"></script>
+    <script src="./js/sugerenciasOpRma.js"></script>
+    <script src="./js/sugerenciasMarcas.js"></script>
 </body>
 </html>
