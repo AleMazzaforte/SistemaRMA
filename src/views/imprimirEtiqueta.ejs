@@ -4,7 +4,7 @@
 </head>
 <body>
     <%- include('partials/header') %>
-    <h1>Imprimir etiquetas</h1>
+    <h1 id="h1">Imprimir etiquetas</h1>
 
     <form id="formCliente">
         <label for="nombre">Nombre:</label>
@@ -38,8 +38,35 @@
         <input type="text" name="pago" id="pago">
     </div>
 
+    <table id="remitente"> 
+        <tr> 
+            <th>Remitente</th> 
+            <td id="remitenteNombre">Femex S.A.</td> 
+        </tr> 
+        <tr> 
+            <th>Dirección</th> 
+            <td id="remitenteDireccion">Duarte Quirós 4105. Cba</td> 
+        </tr> 
+        <tr> 
+            <th>Teléfono</th> 
+                <td id="remitenteTelefono">351 8509718</td> 
+        </tr> 
+        <tr> 
+            <th>Email</th> 
+            <td id="remitenteEmail">Email del Remitente</td> 
+        </tr> 
+    </table>
+    <form id="formBultos"> 
+        <label for="bultos">Cantidad de bultos:</label> 
+        <input type="number" id="bultos" name="bultos" min="1" required> 
+        <button type="button" id="botonImprimir">Imprimir Etiquetas</button> 
+    </form> 
+    
+    <div id="etiquetasContainer" class="hidden"> </div>
+
     <%- include('partials/footer') %>
     <script src="./js/listarClientesEtiquetas.js"></script>
+    <script src="./js/imprimirEtiquetas.js"></script>
 </body>
 </html>
 

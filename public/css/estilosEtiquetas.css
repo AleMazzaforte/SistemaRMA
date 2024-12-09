@@ -84,3 +84,58 @@ button:hover {
     grid-column: span 1;
 }
 
+#remitente {
+    width: 450px;
+    margin: 0px auto;
+    padding: 5px;
+    font-size: 1.5rem;
+    font-family: Arial, sans-serif;
+}
+
+#remitente th, #remitente td {
+    padding: 10px;
+    text-align: left;
+    
+}
+
+#remitente th {
+    
+    font-weight: normal;
+    color: black;
+}
+
+#remitente td {
+    font-weight: normal
+}
+
+
+/* Estilos para la impresión de etiquetas */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #etiquetasContainer {
+        width: 10cm;
+        height: 19cm;
+        margin-top: 4cm; /* Margen superior de 4 cm */
+    }
+
+    .etiqueta {
+        width: 10cm;
+        height: 15cm; /* Área de impresión de la etiqueta */
+        page-break-after: always; /* Asegura que cada etiqueta esté en su propia página */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid var(--bordesInput);
+        padding: 1cm;
+        box-sizing: border-box;
+    }
+
+    .pieEtiqueta {
+        text-align: center;
+        font-weight: bold;
+    }
+}

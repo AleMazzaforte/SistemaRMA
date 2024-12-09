@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
-            console.log('data', data)
+            
             if (data.alerta) {
                 alert(data.alerta);
             }

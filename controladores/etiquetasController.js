@@ -21,7 +21,7 @@ module.exports = {
                 // Consulta para obtener los r_m_a asociados al cliente 
                 const [rmas] = await connection.query('SELECT * FROM r_m_a WHERE idCliente = ?', [cliente.id]); 
                 // Cambié el campo a idCliente para mayor claridad 
-                console.log('rmas', rmas); // Verificación de la columna nEgreso en el array de resultados 
+               
                 const tieneRMA = rmas.some(rma => !rma.nEgreso); 
                 if (tieneRMA) { 
                     res.json({ alerta: `El cliente ${cliente.nombre} tiene RMA`, cliente }); 
