@@ -18,7 +18,7 @@ module.exports = {
     getGestionarRma: async (req, res) => {
         try {
             const productos = [];
-            res.render('rma', { productos });
+            res.render('rma', { productos, cargarProductos });
         } catch (error) {
             console.error(error);
             res.status(500).send('Error al obtener productos');

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clienteSearch = document.getElementById('clienteSearch');
     const suggestionsContainer = document.getElementById('suggestionsContainer1');
     const botonCargar = document.getElementById('botonCargar');
+    let cargarProductos
 
     botonCargar.disabled = true; // Inicializar el botón como deshabilitado
 
