@@ -4,30 +4,68 @@
 </head>
 <body>
     <%- include('partials/header') %> 
+
+    <h1>Estadísticas de OP - LS</h1>
+    <table class="centered-table" id="tablaEstadisticasLs"> 
+        <thead> 
+            <tr> 
+                <th>Producto</th> 
+                <th>Total Importado</th> 
+                <th>Total Devuelto</th> 
+                <th>Porcentaje Fallados</th> 
+            </tr> 
+        </thead> 
+        <tbody> 
+            <% if (estadisticasLs && estadisticasLs.length > 0) { %>
+                <% estadisticasLs.forEach(estadistica => { %> 
+                    <tr> 
+                        <td><%= estadistica.producto %></td> 
+                        <td><%= estadistica.total_importado %></td> 
+                        <td><%= estadistica.total_devuelto %></td> 
+                        <td><%= estadistica.porcentaje_fallados %>%</td> 
+                    </tr> 
+                <% }) %> 
+            <% } else { %>
+                <tr>
+                    <td colspan="4">No hay datos disponibles</td>
+                </tr>
+            <% } %>
+        </tbody> 
+    </table>
+    <button id="descargarExcelLs">Excel LS</button>
     
-<!--h1>Top Jet</h1>
+    <h1>Estadísticas de OP - TJ</h1>
+    <table class="centered-table" id="tablaEstadisticasTj"> 
+        <thead> 
+            <tr> 
+                <th>Producto</th> 
+                <th>Total Importado</th> 
+                <th>Total Devuelto</th> 
+                <th>Porcentaje Fallados</th> 
+            </tr> 
+        </thead> 
+        <tbody> 
+            <% if (estadisticasTj && estadisticasTj.length > 0) { %>
+                <% estadisticasTj.forEach(estadistica => { %> 
+                    <tr> 
+                        <td><%= estadistica.producto %></td> 
+                        <td><%= estadistica.total_importado %></td> 
+                        <td><%= estadistica.total_devuelto %></td> 
+                        <td><%= estadistica.porcentaje_fallados %>%</td> 
+                    </tr> 
+                <% }) %> 
+            <% } else { %>
+                <tr>
+                    <td colspan="4">No hay datos disponibles</td>
+                </tr>
+            <% } %>
+        </tbody> 
+    </table>
+    <button id="descargarExcelTj"> Excel TJ</button>
 
-<h1>Leadder Succsess</h1-->
-
-<h1>Estadísticas de Productos Fallados</h1> 
-<table class="centered-table" id="tablaEstadisticas"> 
-    <thead> 
-        <tr> 
-            <th>Producto</th> 
-            <th>Total Importado</th> 
-            <th>Total Devuelto</th> 
-            <th>Porcentaje Fallados</th> 
-        </tr> 
-    </thead> 
-    <tbody> 
-        <% estadisticas.forEach(estadistica => { %> <tr> 
-            <td><%= estadistica.producto %></td> 
-            <td><%= estadistica.total_importado %></td> 
-            <td><%= estadistica.total_devuelto %></td> 
-            <td><%= estadistica.porcentaje_fallados %>%</td> 
-        </tr> 
-        <% }) %> 
-    </tbody><br>
-    <!--%- include('partials/footer') %--> 
+    <%- include('partials/footer') %> 
+    <script src="./js/descargarExcel.js"></script>
 </body>
 </html>
+
+

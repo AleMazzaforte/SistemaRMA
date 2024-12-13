@@ -72,7 +72,7 @@ router.post('/eliminarTransporte/:idTransporte', authController.isAuthenticated,
 //Rutas para imprimir etiquetas
 router.get('/imprimirEtiqueta', authController.isAuthenticated, imprimirEtiqueta.getImprimirEtiqueta);
 router.post('/verificarRMAyBuscarCliente', authController.isAuthenticated, imprimirEtiqueta.verificarRMAyBuscarCliente); 
-
+router.post('/imprimirEtiquetas', imprimirEtiqueta.imprimirEtiquetas);
 
 //Rutas para marcas
 router.get('/cargarMarcas', authController.isAuthenticated, marcas.getCargarMarcas);
@@ -95,5 +95,7 @@ router.get('/detalleOp/:opId', authController.isAuthenticated, cargarOp.getDetal
 
 //Rutas para estadisticas
 router.get('/estadisticas', authController.isAuthenticated, estadisticas.getEstadisticasOp);
+router.get('/descargarExcelLs', authController.isAuthenticated, estadisticas.getDescargarExcelLs);
+router.get('/descargarExcelTj', authController.isAuthenticated, estadisticas.getDescargarExcelTj);
 
 module.exports = router;

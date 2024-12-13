@@ -1,6 +1,6 @@
 const { conn } = require('../bd/bd');
-const { postActualizarCliente } = require('./clientesController');
-
+//const { postActualizarCliente } = require('./clientesController');
+let cargarProductos
 // Funciones para formatear fechas
 const formatFecha = (fecha) => {
     if (!fecha) return '';

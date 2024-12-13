@@ -1,16 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const btnImprimir = document.getElementById('botonImprimir');
-    const etiquetasContainer = document.getElementById('etiquetasContainer');
-    const formCliente = document.getElementById('formCliente');
-    const formBultos = document.getElementById('formBultos');
-    const datosCliente = document.getElementById('datosCliente');
-    const remitenteTable = document.getElementById('remitente');
-    const header = document.querySelector('.header');
-    const footer = document.getElementById('footer');
-    const h1= document.getElementById('h1');
+    const inputCantidadBultos = document.getElementById('bultos');
 
-
-    btnImprimir.addEventListener('click', () => {
+    // Función para manejar la impresión
+    const handlePrint = () => {
         const cantidadBultos = parseInt(document.getElementById('bultos').value);
         const cliente = {
             nombre: document.getElementById('nombre').value,
@@ -25,61 +18,58 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const remitente = {
             nombre: document.getElementById('remitenteNombre').textContent,
+            cuit: document.getElementById('remitenteCuit').textContent,
             direccion: document.getElementById('remitenteDireccion').textContent,
-            telefono: document.getElementById('remitenteTelefono').textContent,
-            email: document.getElementById('remitenteEmail').textContent
+            telefono: document.getElementById('remitenteTelefono').textContent
         };
-        generarEtiquetas(cliente, remitente, cantidadBultos);
-        
-        // Ocultar elementos no deseados para imprimir
-        formCliente.style.display = 'none';
-        formBultos.style.display = 'none';
-        datosCliente.style.display = 'none';
-        footer.style.display = 'none';
-        header.style.display = 'none';
-        h1.style.display = 'none';
 
-        // Mostrar el contenedor de etiquetas
-        etiquetasContainer.classList.remove('hidden');
+        fetch('/imprimirEtiquetas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cliente, remitente, cantidadBultos })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const base64PDF = data.base64;
+            const pdfWindow = window.open("");
+            if (pdfWindow) {
+                pdfWindow.document.write(
+                    `<iframe id='pdfFrame' width='100%' height='100%' src='data:application/pdf;base64,${base64PDF}'></iframe>`
+                );
+                const pdfFrame = pdfWindow.document.getElementById('pdfFrame');
+                setTimeout(() => {
+                    pdfFrame.onload = () => {
+                        pdfWindow.print();
+                    };
+                }, 500);
+            } else {
+                console.error('Error al crear la ventana del navegador');
+                alert('Error al crear la ventana del navegador');
+            }
+        })
+        .catch(error => {
+            console.error('Error al imprimir:', error);
+            alert('Error al imprimir las etiquetas');
+        });
+    };
 
-        // Esperar un momento para asegurar que los estilos se apliquen antes de imprimir
-        setTimeout(() => {
-            window.print();
+    // Event listener para el botón de imprimir
+    btnImprimir.addEventListener('click', handlePrint);
 
-            // Restaurar la visibilidad de los elementos ocultos después de imprimir
-            formCliente.style.display = '';
-            formBultos.style.display = '';
-            datosCliente.style.display = '';
-
-            // Ocultar nuevamente el contenedor de etiquetas
-            etiquetasContainer.classList.add('hidden');
-        }, 1000);
-    });
-
-    function generarEtiquetas(cliente, remitente, cantidadBultos) {
-        etiquetasContainer.innerHTML = ''; // Limpiar etiquetas anteriores
-        for (let i = 1; i <= cantidadBultos; i++) {
-            const etiqueta = document.createElement('div');
-            etiqueta.classList.add('etiqueta');
-            etiqueta.innerHTML = `
-                <div>Cliente: <strong>${cliente.nombre}</strong></div>
-                <div>CUIT: <strong>${cliente.cuit}</strong></div>
-                <div>Provincia: <strong>${cliente.provincia}</strong></div>
-                <div>Ciudad: <strong>${cliente.ciudad}</strong></div>
-                <div>Dirección: <strong>${cliente.direccion}</strong></div>
-                <div>Teléfono: <strong>${cliente.telefono}</strong></div>
-                <div>Seguro: <strong>${cliente.seguro}</strong></div>
-                <div>Entrega: <strong>${cliente.condicionDeEntrega}</strong></div>
-                <div>Pago: <strong>${cliente.condicionDePago}</strong></div>
-                
-                <div>Remitente: <strong>${remitente.nombre}</strong></div>
-                <div>Dirección: <strong>${remitente.direccion}</strong></div>
-                <div>Teléfono: <strong>${remitente.telefono}</strong></div>
-                <div>Email: <strong>${remitente.email}</strong></div>
-                <div class="pieEtiqueta">BULTOS <strong>${i}</strong> de <strong>${cantidadBultos}</strong></div>
-            `;
-            etiquetasContainer.appendChild(etiqueta);
+    // Event listener para detectar Enter en el input de cantidad de bultos
+    inputCantidadBultos.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evita el comportamiento por defecto del Enter
+            handlePrint();
         }
-    }
+    });
 });
+
+
+
+
+
+
 

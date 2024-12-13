@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/stock')
         .then(response => response.json())
         .then(stockData => {
-            console.log('Datos de stock:', stockData); // Verificar los datos obtenidos
             const acumulado = {};
 
             // Procesar los datos y acumular las cantidades por SKU y Marca
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Guardar los datos acumulados para filtrado
             window.acumulado = acumulado;
-            console.log('Datos acumulados:', acumulado); // Verificar los datos acumulados
             renderTable(acumulado);
             setupFilter(); // Configurar el filtro después de cargar los datos
         })
@@ -27,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Función para renderizar la tabla
 function renderTable(data) {
-    console.log('Renderizando tabla con datos:', data); // Verificar los datos antes de renderizar
     const stockDiv = document.getElementById('stockTable');
     stockDiv.innerHTML = ''; // Limpiar contenido previo
     const table = document.createElement('table');

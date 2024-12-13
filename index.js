@@ -1,31 +1,35 @@
 require('dotenv').config();
-const mysql = require('mysql2');
-
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT
-});
-
-connection.connect((err) => {
-    if (err) {
-        console.error('Error conectándose a la base de datos:', err);
-        return;
-    }
-    console.log('Conexión a la base de datos exitosa');
-    connection.end();
-});
-
 const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const rutas = require('./rutas/rutas.js');
+const { conn } = require('./bd/bd.js')
+
+const cors = require('cors');
+const port = process.env.PORT;
 const app = express();
-const port = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-    res.send('Prueba de conexión a la base de datos');
-});
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'src/views'));
 
-app.listen(port, () => {
-    console.log(`Servidor corriendo en puerto: ${port}`);
-});
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Middleware para procesar formularios
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors({
+    origin: "sistema-rma.vercel.app",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+app.use(cookieParser());
+// Usar las rutas importadas
+app.use('/', rutas);
+
+
+
+app.listen(port, (req, res) => {
+    console.log(`Servidor corriendo en puerto:  ${port}`);
+})
+
+ 
