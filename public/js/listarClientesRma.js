@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const clienteSearch = document.getElementById('clienteSearch');
     const suggestionsContainer = document.getElementById('suggestionsContainer1');
@@ -83,10 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Deshabilitar la selección por flechas
-        clienteSearch.removeEventListener('keydown', clienteSearch); // Elimina el listener de keydown
-        if (rutaActual == '/gestionarRma') {
-            cargarProductos(cliente.id);
-        }
+        // clienteSearch.removeEventListener('keydown', clienteSearch); // Elimina el listener de keydown
+        // if (rutaActual == '/gestionarRma') {
+        //     cargarProductos(cliente.id);
+        // }
     };
 
     document.addEventListener('click', (e) => {

@@ -5,6 +5,66 @@
      h1.insertAdjacentHTML('beforeend', 'Gestionar Rma');
 }
 
+async function cargarProductos(idCliente, nombreCliente) {
+    try {
+        const response = await fetch(`/listarProductosRma/${idCliente}`);
+        const productos = await response.json();
+
+        const productosTableBody = document.getElementById('productosTableBody');
+        productosTableBody.innerHTML = ''; // Limpiar tabla antes de llenarla
+
+        if (productos.length > 0) {
+            document.getElementById('formProductos').style.display = 'grid';
+            productos.forEach((producto) => {
+                const formatDate = date => {
+                    const [day, month, year] = date.split('/');
+                    return `${year}-${month}-${day}`;
+                };
+
+                const row = document.createElement('tr');
+                row.dataset.id = producto.idRma; // Colocar idRma en el dataset de la fila
+                row.innerHTML = `
+                    <td><input type="text" value="${producto.modelo}" name="modelo" readonly /></td>
+                    <td><input type="number" value="${producto.cantidad}" name="cantidad" readonly /></td>
+                    <td><input type="text" value="${producto.marca}" name="marca" readonly /></td>
+                    <td><input type="date" value="${producto.solicita ? formatDate(producto.solicita) : ''}" name="solicita" readonly /></td>
+                    <td><input type="text" value="${producto.opLote}" name="opLote" /></td>
+                    <td><input type="date" value="${producto.vencimiento ? formatDate(producto.vencimiento) : ''}" name="vencimiento" /></td>
+                    <td><input type="date" value="${producto.seEntrega ? formatDate(producto.seEntrega) : ''}" name="seEntrega" /></td>
+                    <td><input type="date" value="${producto.seRecibe ? formatDate(producto.seRecibe) : ''}" name="seRecibe" /></td>
+                    <td><input type="text" value="${producto.observaciones}" name="observaciones" /></td>
+                    <td><input type="text" value="${producto.nIngreso}" name="nIngreso" /></td>
+                    <td><input type="text" value="${producto.nEgreso}" name="nEgreso" /></td>
+                    <td><button type="button" class="botonActualizar" data-id="${producto.idRma}">Actualizar</button></td>
+                    <td><button type="button" onclick="eliminarProducto(${producto.idRma})" class="botonEliminar">Eliminar</button></td>
+                `;
+
+                productosTableBody.appendChild(row);
+
+                const inputs = row.querySelectorAll('input');
+                const rowId = row.dataset.id;
+                originalData[rowId] = Array.from(inputs).reduce((acc, input) => {
+                    acc[input.name] = input.value.trim() === '' ? null : input.value;
+                    return acc;
+                }, {});
+            });
+
+        } else {
+            if (nombreCliente) {
+                alert(`El cliente ${nombreCliente} no tiene productos asociados.`);
+            } else {
+                console.error('Error: nombreCliente no está definido.');
+            }
+            document.getElementById('formProductos').style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error al cargar productos:', error);
+    }
+}
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const clienteSearch = document.getElementById('clienteSearch');
     const suggestionsContainer = document.getElementById('suggestionsContainer1');
@@ -110,62 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-async function cargarProductos(idCliente, nombreCliente) {
-    try {
-        const response = await fetch(`/listarProductosRma/${idCliente}`);
-        const productos = await response.json();
-
-        const productosTableBody = document.getElementById('productosTableBody');
-        productosTableBody.innerHTML = ''; // Limpiar tabla antes de llenarla
-
-        if (productos.length > 0) {
-            document.getElementById('formProductos').style.display = 'grid';
-            productos.forEach((producto) => {
-                const formatDate = date => {
-                    const [day, month, year] = date.split('/');
-                    return `${year}-${month}-${day}`;
-                };
-
-                const row = document.createElement('tr');
-                row.dataset.id = producto.idRma; // Colocar idRma en el dataset de la fila
-                row.innerHTML = `
-                    <td><input type="text" value="${producto.modelo}" name="modelo" readonly /></td>
-                    <td><input type="number" value="${producto.cantidad}" name="cantidad" readonly /></td>
-                    <td><input type="text" value="${producto.marca}" name="marca" readonly /></td>
-                    <td><input type="date" value="${producto.solicita ? formatDate(producto.solicita) : ''}" name="solicita" readonly /></td>
-                    <td><input type="text" value="${producto.opLote}" name="opLote" /></td>
-                    <td><input type="date" value="${producto.vencimiento ? formatDate(producto.vencimiento) : ''}" name="vencimiento" /></td>
-                    <td><input type="date" value="${producto.seEntrega ? formatDate(producto.seEntrega) : ''}" name="seEntrega" /></td>
-                    <td><input type="date" value="${producto.seRecibe ? formatDate(producto.seRecibe) : ''}" name="seRecibe" /></td>
-                    <td><input type="text" value="${producto.observaciones}" name="observaciones" /></td>
-                    <td><input type="number" value="${producto.nIngreso}" name="nIngreso" /></td>
-                    <td><input type="number" value="${producto.nEgreso}" name="nEgreso" /></td>
-                    <td><button type="button" class="botonActualizar" data-id="${producto.idRma}">Actualizar</button></td>
-                    <td><button type="button" onclick="eliminarProducto(${producto.idRma})" class="botonEliminar">Eliminar</button></td>
-                `;
-
-                productosTableBody.appendChild(row);
-
-                const inputs = row.querySelectorAll('input');
-                const rowId = row.dataset.id;
-                originalData[rowId] = Array.from(inputs).reduce((acc, input) => {
-                    acc[input.name] = input.value.trim() === '' ? null : input.value;
-                    return acc;
-                }, {});
-            });
-
-        } else {
-            if (nombreCliente) {
-                alert(`El cliente ${nombreCliente} no tiene productos asociados.`);
-            } else {
-                console.error('Error: nombreCliente no está definido.');
-            }
-            document.getElementById('formProductos').style.display = 'none';
-        }
-    } catch (error) {
-        console.error('Error al cargar productos:', error);
-    }
-}
 
 // Escuchar los cambios y actualizar
 let originalData = {};
